@@ -34,7 +34,7 @@ Doing:
 Todo:
   (Empty)
 
-$ tsk
+$ tsk done 1
 Done: 1. Implement task deletion
 
 $ tsk
