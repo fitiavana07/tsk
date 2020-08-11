@@ -4,6 +4,8 @@ Task Management in the command line. Made with Go.
 
 ## How it should work
 
+### Scenario
+
 ```bash
 $ tsk
 No task, good news!
@@ -48,3 +50,26 @@ Todo:
   (Empty)
 ```
 
+### Details
+
+Tasks are stored in a file named tasks.tsk in the current directory.
+
+## Roadmap
+
+- **v0.1**: simple task management (add, do, done)
+
+## v0.1 Tasks Tracking
+
+### Done
+
+(Empty)
+
+### Doing
+
+- add new tasks in a file
+
+### Todo
+
+- list tasks
+- do a task
+- mark task as done
