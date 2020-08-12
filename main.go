@@ -1,69 +1,66 @@
-// Main file
+// Main package
 package main
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
+	"github.com/fitiavana07/tsk/cmd"
+	//"github.com/fitiavana07/tsk/task"
 )
 
-var hasTask = true
-
-var todos []string
-
-type TskData struct {
-	Todo string
-}
-
-type CLIOption struct {
-	action string
-	arg    string
-}
+// action names
+const (
+	ActionAdd  = "add"
+	ActionDo   = "do"
+	ActionDone = "done"
+)
 
 // main is the entrypoint in any go program
 func main() {
-	if !hasTask {
-		fmt.Println("No task, good news!")
-	}
+	// TODO init file
+	// tskDataFile.read()
 
+	// parse command-line flags
 	flag.Parse()
 
-	action := flag.Arg(0)
-	args := flag.Args()
-	fmt.Printf("%v\n", args)
+	// parse to param
+	param := cmd.ParseArgs(flag.Args())
+	fmt.Printf("%v\n", param)
 
-	switch action {
-	case "add":
-		// adding a task
-		task := flag.Arg(1)
+	/*
+		switch param.action {
+		case "add":
+			// adding a task
+			// task := param.arg
 
-		// add the task to the data
+			// add the task to the data
+			// tskData := TskData{task}
 
-		tskData := TskData{task}
+			// data, err := json.Marshal(tskData)
 
-		data, err := json.Marshal(tskData)
+			// if err != nil {
+			// 	fmt.Printf("%v\n", err)
+			// }
 
-		if err != nil {
-			fmt.Printf("%v\n", err)
+			// // overwrite the file
+			// ioutil.WriteFile("tasks.tsk", data, 0644)
+
+			// // tell the news
+			// fmt.Printf("Added: %s\n", task)
+
+		case "do":
+			// doing a task
+			fmt.Println("You choose to do")
+
+		case "done":
+			// done a task
+			fmt.Println("You choose to done")
+
+		default:
+			// list
+			fmt.Println("You choose to list")
 		}
-
-		// overwrite the file
-		ioutil.WriteFile("tasks.tsk", data, 0644)
-
-		// tell the news
-		fmt.Printf("Added: %s\n", task)
-
-	case "do":
-		// doing a task
-		fmt.Println("You choose to do")
-
-	case "done":
-		// done a task
-		fmt.Println("You choose to done")
-
-	default:
-		// list
-		fmt.Println("You choose to list")
-	}
+	*/
 }

@@ -70,6 +70,7 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 
 ### Todo
 
+- add license
 - number tasks
 - list tasks
 - do a task
