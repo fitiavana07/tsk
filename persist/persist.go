@@ -22,29 +22,27 @@ type TskData struct {
 
 // Persister interface for persistance functions
 type Persister interface {
-	Read()
-	Write()
+	Read() TskData
+	Write(data TskData)
 }
 
 // TskDataPersister represents the storage of the data
-type TskDataPersister struct {
-	// the data to persist
-	Data TskData
+type TskDataPersister struct{}
+
+func (p TskDataPersister) Read() TskData {
+	return TskData{}
 }
 
-func (p TskDataPersister) Read() {
-}
-
-func (p TskDataPersister) Write() {
+func (p TskDataPersister) Write(data TskData) {
 	// marshal into json
-	data, err := json.Marshal(p.Data)
+	jsonData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Errorf("Error on json.Marshal: %v", err)
 		return
 	}
 
 	// write into file
-	writeErr := ioutil.WriteFile(DefaultDataFileName, data, 0644)
+	writeErr := ioutil.WriteFile(DefaultDataFileName, jsonData, 0644)
 	if err != nil {
 		fmt.Errorf("Error on writing file: %v", writeErr)
 		return

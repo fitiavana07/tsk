@@ -19,7 +19,15 @@ func TestFilePersisterWrite(t *testing.T) {
 			},
 		},
 	}
+
+	// TODO mock ioutil.WriteFile
 	var persister Persister
-	persister = TskDataPersister{tskData}
-	persister.Write()
+	persister = TskDataPersister{}
+
+	// act
+	persister.Write(tskData)
+
+	// check
+	// TODO check if the file was written properly
+	// TODO check if the written data match the original data
 }
