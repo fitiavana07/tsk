@@ -21,11 +21,11 @@ const (
 type Task struct {
 
 	// index: 1, 2, 3
-	index int
+	Index int
 
 	// name of the task
-	name string
+	Name string
 
 	// state of the task
-	state State
+	State State
 }
