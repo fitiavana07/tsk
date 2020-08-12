@@ -12,25 +12,24 @@ func TestParseArgs(t *testing.T) {
 
 	cases := []Case{
 		{
+			// right args
 			[]string{"add", "implement task deletion"},
-			Param{
-				"add",
-				"implement task deletion",
-			},
+			Param{"add", "implement task deletion"},
 		},
 		{
+			// action and number as arg
 			[]string{"do", "1"},
-			Param{
-				"do",
-				"1",
-			},
+			Param{"do", "1"},
 		},
 		{
+			// no action, no arg
 			[]string{},
-			Param{
-				"",
-				"",
-			},
+			Param{"", ""},
+		},
+		{
+			// too many args
+			[]string{"skip", "too", "many", "args"},
+			Param{"", ""},
 		},
 	}
 
