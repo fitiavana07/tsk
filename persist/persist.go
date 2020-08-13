@@ -33,11 +33,18 @@ type FilePersister struct {
 	fileName string
 }
 
-func (FilePersister) Read() Data {
-	// TODO unimplemented
-	return Data{}
+// Read is FilePersister method to read data from file,
+// it returns a data value
+func (fp FilePersister) Read() (data Data) {
+	fileContent, err := ioutil.ReadFile(fp.fileName)
+	if err != nil {
+		fmt.Errorf("Error on file read: %v", err)
+	}
+	json.Unmarshal(fileContent, &data)
+	return
 }
 
+// Write is FilePersister method to write data into file,
 func (fp FilePersister) Write(data Data) {
 
 	// marshal into json

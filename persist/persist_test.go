@@ -1,11 +1,14 @@
 package persist
 
 import (
-	// "fmt"
+	"fmt"
+	"io/ioutil"
 	"testing"
 
 	"github.com/fitiavana07/tsk/task"
 )
+
+// TODO handle errors: file not found on read, not json in file
 
 func TestFilePersisterWrite(t *testing.T) {
 	// data
@@ -20,7 +23,13 @@ func TestFilePersisterWrite(t *testing.T) {
 		},
 	}
 
-	// TODO mock ioutil.WriteFile
+	// mock ioutil.WriteFile
+	ioutilWriteFile := ioutil.WriteFile
+	defer func() {
+		ioutil.WriteFile = ioutilWriteFile
+	}()
+	fmt.Printf("%v\n", ioutilWriteFile)
+
 	var persister Persister
 	persister = FilePersister{"file.tsk"}
 
@@ -30,4 +39,11 @@ func TestFilePersisterWrite(t *testing.T) {
 	// check
 	// TODO check if the file was written properly
 	// TODO check if the written data match the original data
+}
+
+func TestFilePersisterRead(t *testing.T) {
+	var persister Persister
+	persister = FilePersister{"tsk.json"}
+	data := persister.Read()
+	fmt.Printf("%v\n", data)
 }
