@@ -9,7 +9,7 @@ import (
 
 func TestFilePersisterWrite(t *testing.T) {
 	// data
-	tskData := TskData{
+	data := Data{
 		LastTaskIndex: 1,
 		Tasks: []task.Task{
 			{
@@ -22,10 +22,10 @@ func TestFilePersisterWrite(t *testing.T) {
 
 	// TODO mock ioutil.WriteFile
 	var persister Persister
-	persister = TskDataPersister{}
+	persister = FilePersister{"file.tsk"}
 
 	// act
-	persister.Write(tskData)
+	persister.Write(data)
 
 	// check
 	// TODO check if the file was written properly

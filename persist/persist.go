@@ -8,11 +8,9 @@ import (
 	"github.com/fitiavana07/tsk/task"
 )
 
-// file name
-const DefaultDataFileName = ".tsk"
+// Data represents the whole tsk data
+type Data struct {
 
-// TskData represents the whole tsk data
-type TskData struct {
 	// last task index, used to create the next task
 	LastTaskIndex int
 
@@ -20,20 +18,28 @@ type TskData struct {
 	Tasks []task.Task
 }
 
-// Persister interface for persistance functions
+// Persister reads and writes data to external storage
 type Persister interface {
-	Read() TskData
-	Write(data TskData)
+
+	// Read reads data and returns a Data value
+	Read() Data
+
+	// Write writes data given a Data value
+	Write(Data)
 }
 
-// TskDataPersister represents the storage of the data
-type TskDataPersister struct{}
-
-func (p TskDataPersister) Read() TskData {
-	return TskData{}
+// FilePersister is a Persister which uses a single file as storage
+type FilePersister struct {
+	fileName string
 }
 
-func (p TskDataPersister) Write(data TskData) {
+func (FilePersister) Read() Data {
+	// TODO unimplemented
+	return Data{}
+}
+
+func (fp FilePersister) Write(data Data) {
+
 	// marshal into json
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -42,7 +48,7 @@ func (p TskDataPersister) Write(data TskData) {
 	}
 
 	// write into file
-	writeErr := ioutil.WriteFile(DefaultDataFileName, jsonData, 0644)
+	writeErr := ioutil.WriteFile(fp.fileName, jsonData, 0644)
 	if err != nil {
 		fmt.Errorf("Error on writing file: %v", writeErr)
 		return
