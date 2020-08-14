@@ -1,23 +1,14 @@
-// cmd package, for cmd related functions
+// Package cmd is the entrypoint
 package cmd
 
-// CLIParam represents tsk CLI params, composed of action and the main arg
-type Param struct {
-	Action string
-	Arg    string
-}
+import (
+	//"flag"
+	"fmt"
+	"io"
+)
 
-// ParseArgs parses args array returned by flag.Args(),
-// and returns a Param value
-func ParseArgs(args []string) Param {
-	switch len(args) {
-	case 0:
-		return Param{"", ""}
-	case 1:
-		return Param{args[0], ""}
-	case 2:
-		return Param{args[0], args[1]}
-	default:
-		return Param{"", ""}
-	}
+// Main is the entrypoint of the program.
+// Output is written into the provided io.Writer.
+func Main(args []string, out io.Writer) {
+	fmt.Fprint(out, "No task, good news!\n")
 }

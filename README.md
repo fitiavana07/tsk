@@ -75,3 +75,7 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 - list tasks
 - do a task
 - mark task as done
+
+### Notes
+
+For directory structure, refer to https://github.com/golang-standards/project-layout.
