@@ -8,5 +8,5 @@ import (
 
 // main is the entrypoint in any go program
 func main() {
-	cmd.Main(os.Stdout)
+	cmd.Main(os.Args[1:], os.Stdout)
 }
