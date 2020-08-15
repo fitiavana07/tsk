@@ -52,10 +52,13 @@ func TestTskMainAdd(t *testing.T) {
 
 	}
 
+	// multiple test cases to test if the output corresponds to the input
 	argsCases := [][]string{
 		{"add", "Implement task deletion"},
 		{"add", "Write tests"},
 	}
+
+	// test for the cases
 	for _, args := range argsCases {
 		t.Run(strings.Join(args, " "), func(t *testing.T) {
 			testArgs(args, t)
