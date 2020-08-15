@@ -14,7 +14,7 @@ func TestTskMain(t *testing.T) {
 	buffer := &bytes.Buffer{}
 
 	// act
-	Main([]string{}, buffer)
+	Main(buffer, []string{})
 
 	// result
 	got := buffer.String()
@@ -28,31 +28,31 @@ func TestTskMain(t *testing.T) {
 	}
 }
 
-// tests: tsk add 'Implement task deletion'
+// TestTskMainAdd tests adding a task without pre-added tasks
 func TestTskMainAdd(t *testing.T) {
 	// test adding task given the args
 	testArgs := func(args []string, index int, t *testing.T) {
-		// command line arguments, got from os.Args[1:]
-		// an io.Writer implementation for tests
+		// Given: args: command line arguments as {name}
+
+		// buffer to write output
 		buffer := &bytes.Buffer{}
 
-		// act, in: args, out: buffer
-		Main(args, buffer)
+		// When: I run tsk with args
+		Main(buffer, args)
 
 		// result
 		got := buffer.String()
 
-		// want
+		// Then: output: Added: {index}. {name}
 		want := fmt.Sprintf("Added: %d. %s\n", index, args[1])
 
 		// check output
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
 		}
-
 	}
 
-	// multiple test cases to test if the output corresponds to the input
+	// multiple test cases to verify that output depend on intput
 	argsCases := [][]string{
 		{"add", "Implement task deletion"},
 		{"add", "Write tests"},
@@ -64,4 +64,14 @@ func TestTskMainAdd(t *testing.T) {
 			testArgs(args, index+1, t)
 		})
 	}
+
+	// TODO verify all tasks are in the data file
+}
+
+func TestTskMainAddPersistentNonEmpty(*testing.T) {
+	// 1. given a json data file with a non-empty tasks list,
+	// 		where the last index is 5
+	// 2. given an args from command line: ["add", "Next task"]
+	// 3. verify the output is: "Added: 6. Next task"
+	// 4. verify the task is present in the json data file
 }

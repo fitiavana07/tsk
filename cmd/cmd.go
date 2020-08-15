@@ -12,10 +12,12 @@ var tasksList = &[]task.Task{}
 // Main is the entrypoint of the program.
 // Output is written into the provided io.Writer.
 // Get args from os.Args[1:] in command line
-func Main(args []string, out io.Writer) {
+func Main(out io.Writer, args []string) {
 	switch l := len(args); {
+
 	case l == 0:
 		fmt.Fprintf(out, "No task, good news!\n")
+
 	case l == 2:
 		// current index
 		index := len(*tasksList) + 1
