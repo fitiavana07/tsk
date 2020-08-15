@@ -1,5 +1,4 @@
-// task package
-package task
+package internal
 
 // State represents the type of a task
 // (define a new type to allow associating methods)
