@@ -71,18 +71,25 @@ func TestWriteDataToFile(t *testing.T) {
 }
 
 func TestReadDataFromFile(t *testing.T) {
+	// given: a file with JSON data
 	filePath := filepath.Join(t.TempDir(), "FILE.JSON")
-
-	writtenFile, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0644)
+	writtenFile, err := os.OpenFile(
+		filePath,
+		os.O_RDWR|os.O_CREATE,
+		0644,
+	)
 	data := struct{ Key string }{"value"}
 	WriteData(data, writtenFile)
 
+	// when: I read from the file
 	got := &struct{ Key string }{}
 	file, err := os.Open(filePath)
 	if err != nil {
 		t.Errorf("%v", err)
 	}
 	ReadData(file, got)
+
+	// then: I get the same data
 	if *got != data {
 		t.Errorf("got %v, wanted %v", got, data)
 	}

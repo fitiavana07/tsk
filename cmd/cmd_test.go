@@ -5,16 +5,21 @@ import (
 
 	"bytes"
 	"fmt"
-	"strings"
+	// "os"
+	"github.com/fitiavana07/tsk/internal/persist"
 )
 
-// tests: tsk
-func TestTskMain(t *testing.T) {
+// TestTskMainFirstUsage tests first use of the program
+func TestTskMainFirstUsage(t *testing.T) {
 	// an io.Writer implementation for tests
 	buffer := &bytes.Buffer{}
+	readerBuffer := &bytes.Buffer{}
+	writerBuffer := &bytes.Buffer{}
 
-	// act
-	Main(buffer, []string{})
+	// Given: There is no data file
+
+	// When:
+	Main(buffer, []string{}, readerBuffer, writerBuffer)
 
 	// result
 	got := buffer.String()
@@ -29,19 +34,22 @@ func TestTskMain(t *testing.T) {
 }
 
 // TestTskMainAdd tests adding a task without pre-added tasks
-func TestTskMainAdd(t *testing.T) {
+func TestTskMainAddAfterNoDataFile(t *testing.T) {
+	// Given: the file doesn't exist
+	persistBuffer := &bytes.Buffer{}
+
 	// test adding task given the args
 	testArgs := func(args []string, index int, t *testing.T) {
 		// Given: args: command line arguments as {name}
 
 		// buffer to write output
-		buffer := &bytes.Buffer{}
+		printBuffer := &bytes.Buffer{}
 
 		// When: I run tsk with args
-		Main(buffer, args)
+		Main(printBuffer, args, persistBuffer, persistBuffer)
 
 		// result
-		got := buffer.String()
+		got := printBuffer.String()
 
 		// Then: output: Added: {index}. {name}
 		want := fmt.Sprintf("Added: %d. %s\n", index, args[1])
@@ -53,19 +61,37 @@ func TestTskMainAdd(t *testing.T) {
 	}
 
 	// multiple test cases to verify that output depend on intput
-	argsCases := [][]string{
-		{"add", "Implement task deletion"},
-		{"add", "Write tests"},
+	tasks := []string{
+		"Implement task deletion",
+		"Write tests",
 	}
 
-	// test for the cases
-	for index, args := range argsCases {
-		t.Run(strings.Join(args, " "), func(t *testing.T) {
-			testArgs(args, index+1, t)
-		})
-	}
+	t.Run("PrintCorrectOutput", func(t *testing.T) {
+		// test for the cases
+		for index, task := range tasks {
+			testArgs([]string{"add", task}, index+1, t)
+		}
+	})
 
-	// TODO verify all tasks are in the data file
+	t.Run("TasksAreInFile", func(t *testing.T) {
+		// read file
+		data := &persist.TskData{}
+		persist.ReadData(persistBuffer, data)
+
+		for _, task := range tasks {
+			found := false
+			for i := range data.Tasks {
+				if data.Tasks[i].Name == task {
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Errorf("task %q not found in data file", task)
+			}
+		}
+	})
+
 }
 
 func TestTskMainAddPersistentNonEmpty(*testing.T) {

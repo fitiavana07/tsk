@@ -8,17 +8,7 @@ import (
 	"github.com/fitiavana07/tsk/internal/task"
 	"io"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 )
-
-// DefaultDataFilePath returns default data file path
-// which is $HOME/.tsk/data.db
-func DefaultDataFilePath() string {
-	homeDir, _ := os.UserHomeDir()
-	tskFile := filepath.Join(homeDir, ".tsk", "data.db")
-	return tskFile
-}
 
 // WriteData writes data into out.
 func WriteData(data interface{}, out io.Writer) {
