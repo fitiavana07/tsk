@@ -3,6 +3,10 @@ package persist
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -42,4 +46,39 @@ func TestReadData(t *testing.T) {
 	if *data != *got {
 		t.Errorf("got %+v, want %+v", got, data)
 	}
+}
+
+func TestWriteDataToFile(t *testing.T) {
+	filePath := filepath.Join(t.TempDir(), "FILE.JSON")
+
+	// given: data
+	data := struct{ Key string }{"value"}
+
+	// when: I write to a file
+	file, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	WriteData(data, file)
+
+	// then: the file is not empty
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	if len(content) == 0 {
+		t.Errorf("created file %q is empty", filePath)
+	}
+}
+
+func TestReadDataFromFile(t *testing.T) {
+	t.Skip()
+	filePath := filepath.Join(t.TempDir(), "FILE.JSON")
+	got := &struct{ Key string }{}
+	file, err := os.Open(filePath)
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	ReadData(file, got)
+	fmt.Printf("%+v\n", got)
 }
