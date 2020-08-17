@@ -3,7 +3,6 @@ package persist
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -72,13 +71,19 @@ func TestWriteDataToFile(t *testing.T) {
 }
 
 func TestReadDataFromFile(t *testing.T) {
-	t.Skip()
 	filePath := filepath.Join(t.TempDir(), "FILE.JSON")
+
+	writtenFile, err := os.OpenFile(filePath, os.O_RDWR|os.O_CREATE, 0644)
+	data := struct{ Key string }{"value"}
+	WriteData(data, writtenFile)
+
 	got := &struct{ Key string }{}
 	file, err := os.Open(filePath)
 	if err != nil {
 		t.Errorf("%v", err)
 	}
 	ReadData(file, got)
-	fmt.Printf("%+v\n", got)
+	if *got != data {
+		t.Errorf("got %v, wanted %v", got, data)
+	}
 }
