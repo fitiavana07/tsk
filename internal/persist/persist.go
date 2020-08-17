@@ -2,12 +2,12 @@ package persist
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
+	"github.com/fitiavana07/tsk/internal/task"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	//"github.com/fitiavana07/tsk/internal/task"
 )
 
 // DefaultDataFilePath returns default data file path
@@ -18,8 +18,8 @@ func DefaultDataFilePath() string {
 	return tskFile
 }
 
-// WriteData writes data into file filename
-func WriteData(data Data, out io.Writer) {
+// WriteData writes data into out
+func WriteData(data interface{}, out io.Writer) {
 	// marshal into json
 	jsonData, _ := json.Marshal(data)
 
@@ -27,22 +27,42 @@ func WriteData(data Data, out io.Writer) {
 	out.Write(jsonData)
 }
 
-// FileWriter is implementation of io.Writer to write to a file
+// ReadData reads data from in
+func ReadData(in io.Reader, data interface{}) {
+	content, _ := ioutil.ReadAll(in)
+	json.Unmarshal(content, data)
+}
+
+// FileReadWriter is implementation of io.ReadWriter to read and write to a file
 // Example: WriteData(data, &FileWriter{"myFile.json"})
-type FileWriter struct {
+type FileReadWriter struct {
 	filename string
 }
 
-func (fw FileWriter) Write(p []byte) (n int, err error) {
-	err = ioutil.WriteFile(fw.filename, p, 0644)
-	if err != nil {
+func (frw FileReadWriter) Write(p []byte) (n int, err error) {
+	err = ioutil.WriteFile(frw.filename, p, 0644)
+	if err == nil {
 		n = len(p)
 	}
 	return
 }
 
-// Data is any data that can be written into json
-type Data interface{}
+func (frw FileReadWriter) Read(p []byte) (n int, err error) {
+	content, err := ioutil.ReadFile(frw.filename)
+	fmt.Printf("%s\n", content)
+	fmt.Printf("%d\n", len(p))
+	if err == nil {
+		n = 0
+		err = io.EOF
+	}
+	return
+}
+
+// TskData is the type of the whole data stored in persistence
+type TskData struct {
+	// list of tasks
+	Tasks []task.Task
+}
 
 // Data represents the whole tsk data
 // type Data struct {
@@ -50,6 +70,4 @@ type Data interface{}
 // 	// last task index, used to create the next task
 // 	LastTaskIndex int
 
-// 	// list of tasks
-// 	Tasks []task.Task
 // }
