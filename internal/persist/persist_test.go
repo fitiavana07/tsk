@@ -1,49 +1,27 @@
 package persist
 
 import (
-	"fmt"
-	"io/ioutil"
+	"bytes"
+	"encoding/json"
+	//"io/ioutil"
 	"testing"
-
-	"github.com/fitiavana07/tsk/task"
 )
 
-// TODO handle errors: file not found on read, not json in file
+func TestWriteToFile(t *testing.T) {
+	// buffer to get the data to write
+	buffer := &bytes.Buffer{}
 
-func TestFilePersisterWrite(t *testing.T) {
-	// data
-	data := Data{
-		LastTaskIndex: 1,
-		Tasks: []task.Task{
-			{
-				Index: 1,
-				Name:  "do this",
-				State: task.StateDone,
-			},
-		},
+	// given: data,
+	data := struct{ Hey string }{"value"}
+
+	// when: I write to a file
+	WriteData(data, buffer)
+
+	// then: file contains the content in JSON format
+	got := buffer.Bytes()
+	want, _ := json.Marshal(data)
+
+	if bytes.Compare(got, want) != 0 {
+		t.Errorf("got %s, want %s", got, want)
 	}
-
-	// mock ioutil.WriteFile
-	ioutilWriteFile := ioutil.WriteFile
-	defer func() {
-		ioutil.WriteFile = ioutilWriteFile
-	}()
-	fmt.Printf("%v\n", ioutilWriteFile)
-
-	var persister Persister
-	persister = FilePersister{"file.tsk"}
-
-	// act
-	persister.Write(data)
-
-	// check
-	// TODO check if the file was written properly
-	// TODO check if the written data match the original data
-}
-
-func TestFilePersisterRead(t *testing.T) {
-	var persister Persister
-	persister = FilePersister{"tsk.json"}
-	data := persister.Read()
-	fmt.Printf("%v\n", data)
 }

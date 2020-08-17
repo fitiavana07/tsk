@@ -2,62 +2,54 @@ package persist
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
+	"io"
 	"io/ioutil"
-
-	"github.com/fitiavana07/tsk/task"
+	"os"
+	"path/filepath"
+	//"github.com/fitiavana07/tsk/internal/task"
 )
 
-// Data represents the whole tsk data
-type Data struct {
-
-	// last task index, used to create the next task
-	LastTaskIndex int
-
-	// list of tasks
-	Tasks []task.Task
+// DefaultDataFilePath returns default data file path
+// which is $HOME/.tsk/data.db
+func DefaultDataFilePath() string {
+	homeDir, _ := os.UserHomeDir()
+	tskFile := filepath.Join(homeDir, ".tsk", "data.db")
+	return tskFile
 }
 
-// Persister reads and writes data to external storage
-type Persister interface {
+// WriteData writes data into file filename
+func WriteData(data Data, out io.Writer) {
+	// marshal into json
+	jsonData, _ := json.Marshal(data)
 
-	// Read reads data and returns a Data value
-	Read() Data
-
-	// Write writes data given a Data value
-	Write(Data)
+	// write
+	out.Write(jsonData)
 }
 
-// FilePersister is a Persister which uses a single file as storage
-type FilePersister struct {
-	fileName string
+// FileWriter is implementation of io.Writer to write to a file
+// Example: WriteData(data, &FileWriter{"myFile.json"})
+type FileWriter struct {
+	filename string
 }
 
-// Read is FilePersister method to read data from file,
-// it returns a data value
-func (fp FilePersister) Read() (data Data) {
-	fileContent, err := ioutil.ReadFile(fp.fileName)
+func (fw FileWriter) Write(p []byte) (n int, err error) {
+	err = ioutil.WriteFile(fw.filename, p, 0644)
 	if err != nil {
-		fmt.Errorf("Error on file read: %v", err)
+		n = len(p)
 	}
-	json.Unmarshal(fileContent, &data)
 	return
 }
 
-// Write is FilePersister method to write data into file,
-func (fp FilePersister) Write(data Data) {
+// Data is any data that can be written into json
+type Data interface{}
 
-	// marshal into json
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		fmt.Errorf("Error on json.Marshal: %v", err)
-		return
-	}
+// Data represents the whole tsk data
+// type Data struct {
 
-	// write into file
-	writeErr := ioutil.WriteFile(fp.fileName, jsonData, 0644)
-	if err != nil {
-		fmt.Errorf("Error on writing file: %v", writeErr)
-		return
-	}
-}
+// 	// last task index, used to create the next task
+// 	LastTaskIndex int
+
+// 	// list of tasks
+// 	Tasks []task.Task
+// }
