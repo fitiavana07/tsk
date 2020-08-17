@@ -13,8 +13,6 @@ import (
 	"github.com/fitiavana07/tsk/internal/task"
 )
 
-var tasksList = &[]task.Task{}
-
 // Main is the entrypoint of the program.
 // Output is written into the provided io.Writer.
 // Get args from os.Args[1:] in command line
@@ -30,24 +28,23 @@ func Main(
 		fmt.Fprintf(out, "No task, good news!\n")
 
 	case l == 2:
-		// current index
-		index := len(*tasksList) + 1
+		// add to file
+		tskData := &persist.TskData{}
+		persist.ReadData(reader, tskData)
 
-		// add the task
-		*tasksList = append(*tasksList, task.Task{index, args[1]})
+		index := tskData.LastTaskIndex + 1
+		newTask := &task.Task{
+			Index: index,
+			Name:  args[1],
+		}
+
+		tskData.Tasks = append(tskData.Tasks, *newTask)
+		tskData.LastTaskIndex = index
+
+		persist.WriteData(tskData, writer)
 
 		// output the response
 		fmt.Fprintf(out, "Added: %d. %s\n", index, args[1])
 
-		// TODO test it (added before telling "Added")
-		// add to file
-		tskData := &persist.TskData{}
-		persist.ReadData(reader, tskData)
-		fmt.Printf("present data: %+v\n", tskData)
-
-		tskData.Tasks = append(tskData.Tasks, task.Task{index, args[1]})
-
-		fmt.Printf("future data: %+v\n", tskData)
-		persist.WriteData(tskData, writer)
 	}
 }

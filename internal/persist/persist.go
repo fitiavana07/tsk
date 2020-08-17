@@ -34,12 +34,7 @@ func ReadData(in io.Reader, data interface{}) {
 type TskData struct {
 	// list of tasks
 	Tasks []task.Task
+
+	// last task index, used to create the next task
+	LastTaskIndex int
 }
-
-// Data represents the whole tsk data
-// type Data struct {
-
-// 	// last task index, used to create the next task
-// 	LastTaskIndex int
-
-// }
