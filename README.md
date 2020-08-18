@@ -56,7 +56,8 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 
 ## Roadmap
 
-- **v0.1**: simple task management (add, do, done)
+- **v0.1**: simple task management (add, do, done, list) with persistence
+- **v0.2**: advanced management (edit, delete)
 
 ## v0.1 Tasks Tracking
 
@@ -70,11 +71,11 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 
 ### Todo
 
-- add license
-- number tasks
-- list tasks
-- do a task
-- mark task as done
+- [x] add license
+- [x] number tasks
+- [ ] list tasks
+- [ ] do a task
+- [ ] mark task as done
 
 ### Notes
 
