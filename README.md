@@ -2,6 +2,10 @@
 
 Task Management in the command line. Made with Go.
 
+**Version 0.2 released: you can add tasks now**
+
+[![asciicast](https://asciinema.org/a/354417.svg)](https://asciinema.org/a/354417)
+
 ## How it should work
 
 ### Scenario
