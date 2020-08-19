@@ -22,6 +22,9 @@ func Main(
 	reader io.Reader,
 	writer io.Writer,
 ) {
+	tskData := &persist.TskData{}
+	persist.ReadData(reader, tskData)
+
 	switch l := len(args); {
 
 	case l == 0:
@@ -29,13 +32,12 @@ func Main(
 
 	case l == 2:
 		// add to file
-		tskData := &persist.TskData{}
-		persist.ReadData(reader, tskData)
+		taskName := args[1]
 
 		index := tskData.LastTaskIndex + 1
 		newTask := &task.Task{
 			Index: index,
-			Name:  args[1],
+			Name:  taskName,
 		}
 
 		tskData.Tasks = append(tskData.Tasks, *newTask)
@@ -44,7 +46,7 @@ func Main(
 		persist.WriteData(tskData, writer)
 
 		// output the response
-		fmt.Fprintf(out, "Added: %d. %s\n", index, args[1])
+		fmt.Fprintf(out, "Added: %d. %s\n", index, taskName)
 
 	}
 }
