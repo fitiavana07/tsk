@@ -75,7 +75,7 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 
 - [x] add license
 - [x] number tasks
-- [ ] list tasks
+- [x] list tasks
 - [ ] do a task
 - [ ] mark task as done
 
