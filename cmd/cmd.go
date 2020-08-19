@@ -28,7 +28,14 @@ func Main(
 	switch l := len(args); {
 
 	case l == 0:
-		fmt.Fprintf(out, "No task, good news!\n")
+		tasks := tskData.Tasks
+		if len(tasks) == 0 {
+			fmt.Fprintf(out, "No task, good news!\n")
+		} else {
+			for _, task := range tasks {
+				fmt.Fprintf(out, "%d. %s\n", task.Index, task.Name)
+			}
+		}
 
 	case l == 2:
 		// add to file
