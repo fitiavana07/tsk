@@ -19,33 +19,24 @@ Done:
 Doing:
 
 Todo:
-  1. Implement task deletion
+    1. Implement task deletion
 
 $ tsk do 1
 Doing: 1. Implement task deletion
 
 $ tsk
 Done:
-  (Empty)
 
 Doing:
-  1. Implement task deletion
+    1. Implement task deletion
 
 Todo:
-  (Empty)
 
 $ tsk done 1
 Done: 1. Implement task deletion
 
 $ tsk
-Done:
-  1. Implement task deletion
-
-Doing:
-  (Empty)
-
-Todo:
-  (Empty)
+No task, good news!
 ```
 
 ### Details

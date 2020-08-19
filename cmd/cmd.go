@@ -34,6 +34,10 @@ func Main(
 			return
 		}
 
+		fmt.Fprintf(out, "Done:\n")
+		fmt.Fprintf(out, "\n")
+		fmt.Fprintf(out, "Doing:\n")
+		fmt.Fprintf(out, "\n")
 		fmt.Fprintf(out, "Todo:\n")
 		// list tasks
 		for _, task := range tasks {

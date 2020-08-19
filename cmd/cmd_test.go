@@ -121,7 +121,11 @@ func TestTskMainListPresentTodoTasks(t *testing.T) {
 	// When: I run tsk with the data
 	Main(printBuffer, []string{}, persistBuffer, persistBuffer)
 
-	want := `Todo:
+	want := `Done:
+
+Doing:
+
+Todo:
     1. add 2 tasks
     2. list tasks
 `
