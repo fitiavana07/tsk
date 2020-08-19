@@ -103,7 +103,7 @@ func TestTskMainAddPersistentNonEmpty(*testing.T) {
 	// 4. verify the task is present in the json data file
 }
 
-func TestTskMainListPresentTasks(t *testing.T) {
+func TestTskMainListPresentTodoTasks(t *testing.T) {
 	// given a non-empty data
 	data := &persist.TskData{
 		LastTaskIndex: 2,
@@ -122,7 +122,10 @@ func TestTskMainListPresentTasks(t *testing.T) {
 	// When: I run tsk with the data
 	Main(printBuffer, []string{}, persistBuffer, persistBuffer)
 
-	want := "1. add 2 tasks\n2. list tasks\n"
+	want := `Todo:
+  1. add 2 tasks
+  2. list tasks
+`
 	got := printBuffer.String()
 
 	if got != want {
