@@ -56,8 +56,10 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 
 ## Roadmap
 
-- **v0.1**: simple task management (add, do, done, list) with persistence
-- **v0.2**: advanced management (edit, delete)
+- **v0.1**: task adding with tsk add and persistence
+- **v0.2**: task list with tsk
+- **v0.3**: add task states (do, doing, done)
+- **v0.4**: advanced management (edit, delete)
 
 ## v0.1 Tasks Tracking
 
