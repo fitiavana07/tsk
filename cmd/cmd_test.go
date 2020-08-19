@@ -114,7 +114,6 @@ func TestTskMainListPresentTodoTasks(t *testing.T) {
 	}
 	persistBuffer := &bytes.Buffer{}
 	persist.WriteData(data, persistBuffer)
-	fmt.Printf("%+v\n", persistBuffer)
 
 	// buffer to write output
 	printBuffer := &bytes.Buffer{}
@@ -123,8 +122,8 @@ func TestTskMainListPresentTodoTasks(t *testing.T) {
 	Main(printBuffer, []string{}, persistBuffer, persistBuffer)
 
 	want := `Todo:
-  1. add 2 tasks
-  2. list tasks
+    1. add 2 tasks
+    2. list tasks
 `
 	got := printBuffer.String()
 

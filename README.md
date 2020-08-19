@@ -15,10 +15,8 @@ Added: 1. Implement task deletion
 
 $ tsk
 Done:
-  (Empty)
 
 Doing:
-  (Empty)
 
 Todo:
   1. Implement task deletion

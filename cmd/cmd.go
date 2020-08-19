@@ -37,7 +37,7 @@ func Main(
 		fmt.Fprintf(out, "Todo:\n")
 		// list tasks
 		for _, task := range tasks {
-			fmt.Fprintf(out, "  %d. %s\n", task.Index, task.Name)
+			fmt.Fprintf(out, "%5d. %s\n", task.Index, task.Name)
 		}
 
 	case l == 2:
