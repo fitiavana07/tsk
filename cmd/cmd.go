@@ -31,17 +31,19 @@ func Main(
 		tasks := tskData.Tasks
 		if len(tasks) == 0 {
 			fmt.Fprintf(out, "No task, good news!\n")
-		} else {
-			for _, task := range tasks {
-				fmt.Fprintf(out, "%d. %s\n", task.Index, task.Name)
-			}
+			return
+		}
+
+		// list tasks
+		for _, task := range tasks {
+			fmt.Fprintf(out, "%d. %s\n", task.Index, task.Name)
 		}
 
 	case l == 2:
 		// add to file
+		index := tskData.LastTaskIndex + 1
 		taskName := args[1]
 
-		index := tskData.LastTaskIndex + 1
 		newTask := &task.Task{
 			Index: index,
 			Name:  taskName,
@@ -52,7 +54,6 @@ func Main(
 
 		persist.WriteData(tskData, writer)
 
-		// output the response
 		fmt.Fprintf(out, "Added: %d. %s\n", index, taskName)
 
 	}
