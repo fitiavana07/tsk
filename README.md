@@ -80,3 +80,10 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 ### Notes
 
 For directory structure, refer to https://github.com/golang-standards/project-layout.
+
+### Ideas
+
+Add progress bar using https://github.com/vbauerster/mpb.
+Stylized output with https://github.com/Ullaakut/disgo.
+Use Travis for CI.
+Add colors using https://github.com/gookit/color

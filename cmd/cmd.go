@@ -56,6 +56,5 @@ func Main(
 		persist.WriteData(tskData, writer)
 
 		fmt.Fprintf(out, "Added: %d. %s\n", index, taskName)
-
 	}
 }
