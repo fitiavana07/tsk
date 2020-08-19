@@ -7,6 +7,7 @@ import (
 	"fmt"
 	// "os"
 	"github.com/fitiavana07/tsk/internal/persist"
+	"github.com/fitiavana07/tsk/internal/task"
 )
 
 // TestTskMainFirstUsage tests first use of the program
@@ -100,4 +101,31 @@ func TestTskMainAddPersistentNonEmpty(*testing.T) {
 	// 2. given an args from command line: ["add", "Next task"]
 	// 3. verify the output is: "Added: 6. Next task"
 	// 4. verify the task is present in the json data file
+}
+
+func TestTskMainListPresentTasks(t *testing.T) {
+	// given a non-empty data
+	data := &persist.TskData{
+		LastTaskIndex: 2,
+		Tasks: []task.Task{
+			{Index: 1, Name: "add 2 tasks"},
+			{Index: 2, Name: "list tasks"},
+		},
+	}
+	persistBuffer := &bytes.Buffer{}
+	persist.WriteData(data, persistBuffer)
+	fmt.Printf("%+v\n", persistBuffer)
+
+	// buffer to write output
+	printBuffer := &bytes.Buffer{}
+
+	// When: I run tsk with the data
+	Main(printBuffer, []string{}, persistBuffer, persistBuffer)
+
+	want := "1. add 2 tasks\n2. list tasks\n"
+	got := printBuffer.String()
+
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
 }
