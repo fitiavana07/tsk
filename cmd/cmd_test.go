@@ -5,30 +5,34 @@ import (
 
 	"bytes"
 	"fmt"
-	// "os"
+
 	"github.com/fitiavana07/tsk/internal/persist"
 	"github.com/fitiavana07/tsk/internal/task"
 )
 
+// mock stdout
+func mockStdout() *bytes.Buffer {
+	return &bytes.Buffer{}
+}
+
+// mock file reader/writer
+func mockFileRW() *bytes.Buffer {
+	return &bytes.Buffer{}
+}
+
 // TestTskMainFirstUsage tests first use of the program
 func TestTskMainFirstUsage(t *testing.T) {
-	// an io.Writer implementation for tests
-	buffer := &bytes.Buffer{}
-	readerBuffer := &bytes.Buffer{}
-	writerBuffer := &bytes.Buffer{}
+	stdout := mockStdout()
 
 	// Given: There is no data file
+	fileRW := mockFileRW()
 
 	// When:
-	Main(buffer, []string{}, readerBuffer, writerBuffer)
+	Main(stdout, []string{}, fileRW, fileRW)
 
-	// result
-	got := buffer.String()
-
-	// want
+	// Then:
+	got := stdout.String()
 	want := "No task, good news!\n"
-
-	// check
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
@@ -36,29 +40,27 @@ func TestTskMainFirstUsage(t *testing.T) {
 
 // TestTskMainAdd tests adding a task without pre-added tasks
 func TestTskMainAddAfterNoDataFile(t *testing.T) {
+	stdout := mockStdout()
+
 	// Given: the file doesn't exist
-	persistBuffer := &bytes.Buffer{}
+	fileRW := mockFileRW()
 
 	// test adding task given the args
 	testArgs := func(args []string, index int, t *testing.T) {
+		// clean stdout after each command
+		defer stdout.Reset()
+
 		// Given: args: command line arguments as {name}
-
-		// buffer to write output
-		printBuffer := &bytes.Buffer{}
-
 		// When: I run tsk with args
-		Main(printBuffer, args, persistBuffer, persistBuffer)
-
-		// result
-		got := printBuffer.String()
+		Main(stdout, args, fileRW, fileRW)
 
 		// Then: output: Added: {index}. {name}
+		got := stdout.String()
 		want := fmt.Sprintf("Added: %d. %s\n", index, args[1])
-
-		// check output
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
 		}
+
 	}
 
 	// multiple test cases to verify that output depend on intput
@@ -68,17 +70,17 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 	}
 
 	t.Run("PrintCorrectOutput", func(t *testing.T) {
-		// test for the cases
 		for index, task := range tasks {
 			testArgs([]string{"add", task}, index+1, t)
 		}
 	})
 
 	t.Run("TasksAreInFile", func(t *testing.T) {
-		// read file
+		// read data
 		data := &persist.TskData{}
-		persist.ReadData(persistBuffer, data)
+		persist.ReadData(fileRW, data)
 
+		// find the tasks
 		for _, task := range tasks {
 			found := false
 			for i := range data.Tasks {
@@ -95,7 +97,11 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 
 }
 
+// TestTskMainListPresentTodoTasks tests listing present tasks after adding some tasks
 func TestTskMainListPresentTodoTasks(t *testing.T) {
+	stdout := mockStdout()
+	fileRW := mockFileRW()
+
 	// given a non-empty data
 	data := &persist.TskData{
 		LastTaskIndex: 2,
@@ -104,14 +110,10 @@ func TestTskMainListPresentTodoTasks(t *testing.T) {
 			{Index: 2, Name: "list tasks"},
 		},
 	}
-	persistBuffer := &bytes.Buffer{}
-	persist.WriteData(data, persistBuffer)
-
-	// buffer to write output
-	printBuffer := &bytes.Buffer{}
+	persist.WriteData(data, fileRW)
 
 	// When: I run tsk with the data
-	Main(printBuffer, []string{}, persistBuffer, persistBuffer)
+	Main(stdout, []string{}, fileRW, fileRW)
 
 	want := `Done:
 
@@ -121,8 +123,7 @@ Todo:
     1. add 2 tasks
     2. list tasks
 `
-	got := printBuffer.String()
-
+	got := stdout.String()
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
