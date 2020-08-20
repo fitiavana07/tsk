@@ -95,14 +95,6 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 
 }
 
-func TestTskMainAddPersistentNonEmpty(*testing.T) {
-	// 1. given a json data file with a non-empty tasks list,
-	// 		where the last index is 5
-	// 2. given an args from command line: ["add", "Next task"]
-	// 3. verify the output is: "Added: 6. Next task"
-	// 4. verify the task is present in the json data file
-}
-
 func TestTskMainListPresentTodoTasks(t *testing.T) {
 	// given a non-empty data
 	data := &persist.TskData{
