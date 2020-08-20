@@ -10,16 +10,6 @@ import (
 	"github.com/fitiavana07/tsk/internal/task"
 )
 
-// mock stdout
-func mockStdout() *bytes.Buffer {
-	return &bytes.Buffer{}
-}
-
-// mock file reader/writer
-func mockFileRW() *bytes.Buffer {
-	return &bytes.Buffer{}
-}
-
 // TestTskMainFirstUsage tests first use of the program
 func TestTskMainFirstUsage(t *testing.T) {
 	stdout := mockStdout()
@@ -64,14 +54,14 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 	}
 
 	// multiple test cases to verify that output depend on intput
-	tasks := []string{
+	taskNames := []string{
 		"Implement task deletion",
 		"Write tests",
 	}
 
 	t.Run("PrintCorrectOutput", func(t *testing.T) {
-		for index, task := range tasks {
-			testArgs([]string{"add", task}, index+1, t)
+		for index, name := range taskNames {
+			testArgs([]string{"add", name}, index+1, t)
 		}
 	})
 
@@ -81,7 +71,7 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 		persist.ReadData(fileRW, data)
 
 		// find the tasks
-		for _, task := range tasks {
+		for _, task := range taskNames {
 			found := false
 			for i := range data.Tasks {
 				if data.Tasks[i].Name == task {
@@ -112,7 +102,7 @@ func TestTskMainListPresentTodoTasks(t *testing.T) {
 	}
 	persist.WriteData(data, fileRW)
 
-	// When: I run tsk with the data
+	// When: I run tsk
 	Main(stdout, []string{}, fileRW, fileRW)
 
 	want := `Done:
@@ -127,4 +117,47 @@ Todo:
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
+}
+
+// TestTskMainDoTask tests using `tsk do <id>`
+func TestTskMainDoTask(t *testing.T) {
+	stdout := mockStdout()
+	fileRW := mockFileRW()
+
+	// given a non-empty data
+	data := &persist.TskData{
+		LastTaskIndex: 2,
+		Tasks: []task.Task{
+			{Index: 1, Name: "add 2 tasks"},
+			{Index: 2, Name: "list tasks"},
+		},
+	}
+	persist.WriteData(data, fileRW)
+
+	// When: I run `tsk do 1`
+	Main(stdout, []string{"do", "1"}, fileRW, fileRW)
+
+	// Then: 1 is done
+	want := `Done:
+    1. add 2 tasks
+
+Doing:
+
+Todo:
+    2. list tasks
+`
+	got := stdout.String()
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+// mock stdout
+func mockStdout() *bytes.Buffer {
+	return &bytes.Buffer{}
+}
+
+// mock file reader/writer
+func mockFileRW() *bytes.Buffer {
+	return &bytes.Buffer{}
 }
