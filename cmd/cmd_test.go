@@ -24,7 +24,7 @@ func TestTskMainFirstUsage(t *testing.T) {
 	got := stdout.String()
 	want := "No task, good news!\n"
 	if got != want {
-		t.Errorf("wrong message, got: %q", got)
+		t.Errorf("wrong message: %q, want: %q", got, want)
 	}
 }
 
@@ -48,7 +48,7 @@ func TestTskMainAddAfterNoDataFile(t *testing.T) {
 		got := stdout.String()
 		want := fmt.Sprintf("Added: %d. %s\n", index, args[1])
 		if got != want {
-			t.Errorf("wrong message after tsk add, got: %q", got)
+			t.Errorf("wrong message after tsk add: %q, want: %q", got, want)
 		}
 
 	}
@@ -115,7 +115,7 @@ Todo:
 `
 	got := stdout.String()
 	if got != want {
-		t.Errorf("error in tasks list, got: %q", got)
+		t.Errorf("error in showing tasks list: %q, want: %q", got, want)
 	}
 }
 
@@ -141,7 +141,7 @@ func TestTskMainDoTask(t *testing.T) {
 	want := "Doing: 1. add 2 tasks\n"
 	got := stdout.String()
 	if got != want {
-		t.Errorf("wrong message for tsk do, got: %q", got)
+		t.Errorf("wrong message for tsk do: %q, want: %q", got, want)
 	}
 
 	stdout.Reset()
@@ -159,7 +159,7 @@ Todo:
     2. list tasks
 `
 	if got != want {
-		t.Errorf("wrong output of tsk after do, got: %q", got)
+		t.Errorf("wrong output of tsk after do: %q, want: %q", got, want)
 	}
 }
 
