@@ -1,5 +1,7 @@
 # tsk
 
+[![version](https://img.shields.io/github/release/fitiavana07/tsk.svg?style=flat-square)](https://github.com/fitiavana07/tsk/releases/latest)
+
 Task Management in the command line. Made with Go.
 
 **Version 0.2 released: you can add tasks now**
