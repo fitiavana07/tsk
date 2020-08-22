@@ -2,10 +2,17 @@ package task
 
 // Task type represents a task, with an index and a name
 type Task struct {
-
-	// index: 1, 2, 3
 	Index int
-
-	// name of the task
-	Name string
+	Name  string
+	State State
 }
+
+// State is the state of a task
+type State = uint8
+
+// Possible states of tasks
+const (
+	StateTodo State = iota
+	StateDoing
+	StateDone
+)

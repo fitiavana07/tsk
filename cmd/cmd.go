@@ -2,12 +2,9 @@
 package cmd
 
 import (
-	// "encoding/json"
 	"fmt"
 	"io"
-	// "io/ioutil"
-	// "os"
-	// "path/filepath"
+	// "strconv"
 
 	"github.com/fitiavana07/tsk/internal/persist"
 	"github.com/fitiavana07/tsk/internal/task"
@@ -46,20 +43,39 @@ func Main(
 		}
 
 	case l == 2:
-		// add to file
-		index := tskData.LastTaskIndex + 1
-		taskName := args[1]
+		switch command := args[0]; command {
+		case "add":
+			// add to file
+			index := tskData.LastTaskIndex + 1
+			taskName := args[1]
 
-		newTask := &task.Task{
-			Index: index,
-			Name:  taskName,
+			newTask := task.Task{
+				Index: index,
+				Name:  taskName,
+			}
+
+			// TODO refactor into tskData.addTodo(newTask)
+			tskData.Tasks = append(tskData.Tasks, newTask)
+			tskData.LastTaskIndex = index
+
+			persist.WriteData(tskData, writer)
+
+			fmt.Fprintf(out, "Added: %d. %s\n", index, taskName)
+
+		case "do":
+			// search
+			// for _, task := range tskData.Tasks {
+			// 	index, err := strconv.ParseInt(args[1], 10, 32)
+			// 	if err != nil {
+			// 		fmt.Printf("Error not yet handled: wrong arguments to tsk do")
+			// 	}
+			// 	if task.Index == int(index) {
+			// 		task.State = task.StateDoing
+			// 		break
+			// 	}
+			// }
+		default:
+
 		}
-
-		tskData.Tasks = append(tskData.Tasks, *newTask)
-		tskData.LastTaskIndex = index
-
-		persist.WriteData(tskData, writer)
-
-		fmt.Fprintf(out, "Added: %d. %s\n", index, taskName)
 	}
 }

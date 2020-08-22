@@ -1,5 +1,7 @@
 # tsk
 
+[![Version](https://img.shields.io/github/release/fitiavana07/tsk.svg)](https://github.com/fitiavana07/tsk/releases/latest)
+
 Task Management in the command line. Made with Go.
 
 **Version 0.2 released: you can add tasks now**
@@ -71,6 +73,7 @@ Tasks are stored in a file named tasks.tsk in the current directory.
 - [x] list tasks
 - [ ] do a task
 - [ ] mark task as done
+- [ ] handle errors / wrong user input
 
 ### Notes
 
