@@ -1,6 +1,6 @@
 # tsk
 
-[![Release](https://img.shields.io/github/release/fitiavana07/tsk.svg?style=flat-square)](https://github.com/fitiavana07/tsk/releases/latest)
+[![Release](https://img.shields.io/github/release/fitiavana07/tsk.svg)](https://github.com/fitiavana07/tsk/releases/latest)
 
 Task Management in the command line. Made with Go.
 
