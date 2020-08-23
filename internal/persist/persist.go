@@ -38,3 +38,6 @@ type TskData struct {
 	// last task index, used to create the next task
 	LastTaskIndex int
 }
+
+// TODO New, e.g: data.New(), or storage.NewData()
+// TODO package or model

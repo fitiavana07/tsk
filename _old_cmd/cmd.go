@@ -64,13 +64,13 @@ func Main(
 
 		case "do":
 			// search
-			// for _, task := range tskData.Tasks {
+			// for _, t := range tskData.Tasks {
 			// 	index, err := strconv.ParseInt(args[1], 10, 32)
 			// 	if err != nil {
 			// 		fmt.Printf("Error not yet handled: wrong arguments to tsk do")
 			// 	}
-			// 	if task.Index == int(index) {
-			// 		task.State = task.StateDoing
+			// 	if t.Index == int(index) {
+			// 		t.State = task.StateDoing
 			// 		break
 			// 	}
 			// }

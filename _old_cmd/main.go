@@ -24,7 +24,7 @@ func validateFile(filename string) {
 }
 
 // main is the entrypoint in any go program
-func main() {
+func main2() {
 	filePath := defaultDataFilePath()
 	validateFile(filePath)
 

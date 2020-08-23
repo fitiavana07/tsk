@@ -180,10 +180,6 @@ Use "tsk --done" to show all done tasks
 	2. Create a PR
 `}}
 
-func TskMain([]string, *bytes.Buffer) {
-
-}
-
 func TestFunctional(t *testing.T) {
 	stdout := mockStdout()
 	for _, ac := range scenario {
