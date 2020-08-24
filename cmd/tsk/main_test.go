@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"bytes"
+	"path/filepath"
 )
 
 /*
@@ -15,7 +16,7 @@ Hi!
 Thanks for using tsk!
 To get started, add a task using: tsk add "your task".
 $ tsk
-No task yet
+Your todo list is empty
 To add a task, use: tsk add "your task"
 $ tsk add "Call John Doe"
 Added:
@@ -78,6 +79,9 @@ $ tsk --done
 Done:
 	1. Call John Doe
 	2. Create a PR
+
+TODO error handling
+TODO add directly in doing or done: tsk add --doing "my task", or tsk add --done "my task"
 */
 
 var scenario = []act{{
@@ -87,9 +91,9 @@ var scenario = []act{{
 Thanks for using tsk!
 To get started, add a task using: tsk add "your task".
 `}, {
-	"SecondUse",
+	"NoTaskMessage",
 	a("tsk"),
-	`No task yet
+	`Your todo list is empty
 To add a task, use: tsk add "your task"
 `}, {
 	"AddFirstTask",
@@ -182,17 +186,19 @@ Use "tsk --done" to show all done tasks
 
 func TestFunctional(t *testing.T) {
 	stdout := mockStdout()
+	file := filepath.Join(t.TempDir(), "data.db")
+
 	for _, ac := range scenario {
 		t.Run(ac.name, func(t *testing.T) {
-			testAct(t, ac, stdout)
+			testAct(t, ac, stdout, file)
 		})
 	}
 }
 
-func testAct(t *testing.T, ac act, stdout *bytes.Buffer) {
+func testAct(t *testing.T, ac act, stdout *bytes.Buffer, file string) {
 	defer stdout.Reset()
 
-	TskMain(ac.args, stdout)
+	TskMain(ac.args, stdout, file)
 
 	got := stdout.String()
 	want := ac.output
