@@ -3,12 +3,13 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"os"
 	// "path/filepath"
 
 	"github.com/fitiavana07/tsk/internal/ui"
+	"github.com/fitiavana07/tsk/pkg/storage"
 )
 
+// TODO used in real main()
 // func defaultDataFilePath() string {
 // 	homeDir, _ := os.UserHomeDir()
 // 	tskFile := filepath.Join(homeDir, ".tsk", "data.db")
@@ -24,14 +25,12 @@ func main() {
 }
 
 // TskMain is the entrypoint after main()
-func TskMain(args []string, stdout *bytes.Buffer, file string) {
-
-	rw, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0644)
-	if err != nil {
-		fmt.Printf("%v\n", err)
+func TskMain(args []string, out *bytes.Buffer, file string) {
+	fs := storage.NewFileStorage(file)
+	if fs.IsFirstUse() {
+		fmt.Fprintf(out, ui.MsgWelcome)
+		fs.Save()
+	} else {
+		fmt.Fprintf(out, ui.MsgNoTask)
 	}
-
-	fmt.Fprintf(stdout, ui.MsgWelcome)
-
-	// TODO load data from rw, write "FileVersion": "1" to mark a first visit
 }
