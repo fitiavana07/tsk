@@ -30,7 +30,7 @@ func init() {
 }
 
 func main() {
-	TskMain([]string{}, os.Stdout, datafile)
+	TskMain(os.Args, os.Stdout, datafile)
 }
 
 // TskMain is the entrypoint after main()
