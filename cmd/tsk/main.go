@@ -1,9 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	// "path/filepath"
+	"io"
+	"os"
+	"path/filepath"
 
 	"github.com/fitiavana07/tsk/internal/ui"
 	"github.com/fitiavana07/tsk/pkg/storage"
@@ -21,11 +22,19 @@ import (
 // 	}
 // }
 
+var datafile string
+
+func init() {
+	homeDir, _ := os.UserHomeDir()
+	datafile = filepath.Join(homeDir, ".tskdata")
+}
+
 func main() {
+	TskMain([]string{}, os.Stdout, datafile)
 }
 
 // TskMain is the entrypoint after main()
-func TskMain(args []string, out *bytes.Buffer, file string) {
+func TskMain(args []string, out io.Writer, file string) {
 	fs := storage.NewFileStorage(file)
 	if fs.IsFirstUse() {
 		fmt.Fprintf(out, ui.MsgWelcome)
