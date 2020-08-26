@@ -20,12 +20,13 @@ A Task has these attributes:
 
 func TestNew(t *testing.T) {
 	taskName := "do the task"
-	task := New(taskName)
+	taskID := 10
+	task := New(taskID, taskName)
 
 	t.Run("CheckId", func(t *testing.T) {
 		got := task.ID
-		if got != 0 {
-			t.Errorf("got task.ID=%d, want 0", got)
+		if got != taskID {
+			t.Errorf("got task.ID=%d, want=%d", got, taskID)
 		}
 	})
 	t.Run("CheckName", func(t *testing.T) {

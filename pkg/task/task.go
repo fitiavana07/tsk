@@ -8,8 +8,8 @@ type Task struct {
 }
 
 // New constructs a new task
-func New(name string) *Task {
-	return &Task{Name: name}
+func New(id int, name string) *Task {
+	return &Task{ID: id, Name: name}
 }
 
 // State is the state a task is in
