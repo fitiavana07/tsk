@@ -12,6 +12,6 @@ func (fs FileStorage) AddTask(name string) *task.Task {
 	// append(fs.db.Tasks, tsk)
 	// fs.db.LastID = newID
 
-	tsk := task.New(1, name)
+	tsk := fs.db.AddTask(name)
 	return tsk
 }

@@ -15,12 +15,13 @@ type Storage interface {
 
 // NewFileStorage creates a new file storage backend to store data.
 func NewFileStorage(file string) *FileStorage {
-	return &FileStorage{file}
+	return &FileStorage{file, DB{}}
 }
 
 // FileStorage is backend for storing data into a file.
 type FileStorage struct {
 	file string
+	db   DB
 }
 
 // IsFirstUse returns whether this is the first use of the app.
