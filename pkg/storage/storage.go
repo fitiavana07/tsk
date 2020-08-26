@@ -3,16 +3,22 @@ package storage
 
 import (
 	"os"
+
+	"github.com/fitiavana07/tsk/pkg/task"
 )
 
-// TODO load data from rw, write "FileVersion": "1" to mark a first visit
+// Storage is the generalization of storage driver.
+type Storage interface {
+	// AddTask adds a new task using the storage driver.
+	AddTask(name string) *task.Task
+}
 
-// NewFileStorage creates a new file storage backend to store data
+// NewFileStorage creates a new file storage backend to store data.
 func NewFileStorage(file string) *FileStorage {
 	return &FileStorage{file}
 }
 
-// FileStorage is backend for storing data into a file
+// FileStorage is backend for storing data into a file.
 type FileStorage struct {
 	file string
 }
@@ -26,7 +32,7 @@ func (fs FileStorage) IsFirstUse() bool {
 	return false
 }
 
-// Save saves data into the file,
+// Save saves data into the file.
 func (fs FileStorage) Save() error {
 	fl, err := os.Create(fs.file)
 	if err != nil {
