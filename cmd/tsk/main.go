@@ -36,10 +36,22 @@ func main() {
 // TskMain is the entrypoint after main()
 func TskMain(args []string, out io.Writer, file string) {
 	fs := storage.NewFileStorage(file)
+
 	if fs.IsFirstUse() {
 		fmt.Fprintf(out, ui.MsgWelcome)
 		fs.Save()
-	} else {
+		return
+	}
+
+	if len(args) == 1 {
 		fmt.Fprintf(out, ui.MsgNoTask)
+		return
+	}
+
+	if len(args) == 3 {
+		taskName := args[2]
+		task := fs.AddTask(taskName)
+		ui.RenderTaskAdded(out, *task)
+		return
 	}
 }
