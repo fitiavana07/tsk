@@ -1,4 +1,4 @@
-package storage
+package db
 
 import (
 	"github.com/fitiavana07/tsk/pkg/task"

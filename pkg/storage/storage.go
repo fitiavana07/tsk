@@ -2,8 +2,11 @@
 package storage
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"os"
 
+	"github.com/fitiavana07/tsk/pkg/storage/db"
 	"github.com/fitiavana07/tsk/pkg/task"
 )
 
@@ -15,13 +18,17 @@ type Storage interface {
 
 // NewFileStorage creates a new file storage backend to store data.
 func NewFileStorage(file string) *FileStorage {
-	return &FileStorage{file, DB{}}
+	jsonData, _ := ioutil.ReadFile(file)
+	newDB := &db.DB{}
+	json.Unmarshal(jsonData, newDB)
+
+	return &FileStorage{file, *newDB}
 }
 
 // FileStorage is backend for storing data into a file.
 type FileStorage struct {
 	file string
-	db   DB
+	db   db.DB
 }
 
 // IsFirstUse returns whether this is the first use of the app.
@@ -35,11 +42,17 @@ func (fs FileStorage) IsFirstUse() bool {
 
 // Save saves data into the file.
 func (fs FileStorage) Save() error {
-	fl, err := os.Create(fs.file)
-	if err != nil {
-		return err
+	if !fileExists(fs.file) {
+		fl, err := os.Create(fs.file)
+		if err != nil {
+			return err
+		}
+		fl.Close()
 	}
-	fl.Close()
+
+	jsonData, _ := json.Marshal(fs.db)
+	ioutil.WriteFile(fs.file, jsonData, 0644)
+
 	return nil
 }
 

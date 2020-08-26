@@ -24,7 +24,7 @@ func TestAddTask(t *testing.T) {
 		taskName := "do the 2nd task"
 		task := fs.AddTask(taskName)
 		if task.ID != 2 {
-			t.Errorf("wrong task id, got %d, want 2", task.ID)
+			t.Errorf("wrong task id, got=%d, want=2", task.ID)
 		}
 		if task.Name != taskName {
 			t.Errorf("wrong task name, got %q, want %q", task.Name, taskName)
