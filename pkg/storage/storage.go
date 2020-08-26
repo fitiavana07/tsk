@@ -14,6 +14,9 @@ import (
 type Storage interface {
 	// AddTask adds a new task using the storage driver.
 	AddTask(name string) *task.Task
+
+	// Tasks lists all tasks stored in the storage.
+	Tasks() []task.Task
 }
 
 // NewFileStorage creates a new file storage backend to store data.
@@ -58,6 +61,11 @@ func (fs FileStorage) Save() error {
 	ioutil.WriteFile(fs.file, jsonData, 0644)
 
 	return nil
+}
+
+// Tasks returns a list of all tasks stored in the FileStorage.
+func (fs FileStorage) Tasks() []task.Task {
+	return fs.db.Tasks
 }
 
 func fileExists(file string) bool {

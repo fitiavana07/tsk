@@ -29,3 +29,20 @@ func TestRenderTaskAdded(t *testing.T) {
 	}
 
 }
+
+func TestRenderTasksSingleTodo(t *testing.T) {
+	tasks := []task.Task{*task.New(7, "the seventh task")}
+	out := mockOut()
+
+	RenderTasks(out, tasks)
+
+	want := `Doing: None
+Todo:
+  (use "tsk do 7" to move into Doing)
+        7. the seventh task
+`
+	got := out.String()
+	if got != want {
+		t.Errorf("got:%q, want:%q", got, want)
+	}
+}
