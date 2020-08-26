@@ -10,26 +10,12 @@ import (
 	"github.com/fitiavana07/tsk/pkg/storage"
 )
 
-// TODO used in real main()
-// func defaultDataFilePath() string {
-// 	homeDir, _ := os.UserHomeDir()
-// 	tskFile := filepath.Join(homeDir, ".tsk", "data.db")
-// 	return tskFile
-// }
-// func validateFile(filename string) {
-// 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-// 		os.Mkdir(filepath.Dir(filename), os.ModePerm)
-// 	}
-// }
-
-var datafile string
-
 func init() {
-	homeDir, _ := os.UserHomeDir()
-	datafile = filepath.Join(homeDir, ".tskdata")
 }
 
 func main() {
+	homeDir, _ := os.UserHomeDir()
+	datafile := filepath.Join(homeDir, ".tskdata")
 	TskMain(os.Args, os.Stdout, datafile)
 }
 

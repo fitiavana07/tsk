@@ -27,8 +27,12 @@ func NewFileStorage(file string) *FileStorage {
 
 // FileStorage is backend for storing data into a file.
 type FileStorage struct {
+
+	// file is name of the file in which to store the data.
 	file string
-	db   db.DB
+
+	// db if the whole database in the file, when loaded in memory.
+	db db.DB
 }
 
 // IsFirstUse returns whether this is the first use of the app.
