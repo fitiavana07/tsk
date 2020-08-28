@@ -120,7 +120,7 @@ Todo:
 	a("tsk"),
 	`Doing:
   (use "tsk done 1" to mark as Done)
-		1. Call John Doe
+        1. Call John Doe
 Todo: None
 `}, {
 	"AddSecondTask",
@@ -134,7 +134,7 @@ Todo: None
 	a("tsk"),
 	`Doing:
   (use "tsk done 1" to mark as Done)
-		1. Call John Doe
+        1. Call John Doe
 Todo:
   (use "tsk do 2" to move into Doing)
         2. Create a PR
@@ -204,7 +204,7 @@ func testAct(t *testing.T, ac act, stdout *bytes.Buffer, file string) {
 	want := ac.output
 
 	if got != want {
-		t.Errorf("wrong output: \n> ARGS:\n%s\n\n> GOT:\n%s\n> WANT:\n%s", ac.args, got, want)
+		t.Errorf("wrong output: \n> ARGS:\n%s\n\n> GOT:\n%q\n> WANT:\n%q", ac.args, got, want)
 	}
 }
 
