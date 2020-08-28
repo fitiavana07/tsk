@@ -13,3 +13,8 @@ Todo:
         {{ .ID }}. {{ .Name }}
 {{- end }}
 `
+
+const tmplTaskDoing = `Moved into Doing:
+  (once done, use "tsk done {{ .ID }}" to mark it as done)
+        {{ .ID }}. {{ .Name }}
+`

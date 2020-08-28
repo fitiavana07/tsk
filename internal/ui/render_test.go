@@ -13,8 +13,8 @@ func mockOut() *bytes.Buffer {
 }
 
 func TestRenderTaskAdded(t *testing.T) {
-	tsk := task.New(5, "do the 5th task")
 	out := mockOut()
+	tsk := task.New(5, "do the 5th task")
 
 	RenderTaskAdded(out, *tsk)
 
@@ -31,8 +31,8 @@ func TestRenderTaskAdded(t *testing.T) {
 }
 
 func TestRenderTasksSingleTodo(t *testing.T) {
-	tasks := []task.Task{*task.New(7, "the seventh task")}
 	out := mockOut()
+	tasks := []task.Task{*task.New(7, "the seventh task")}
 
 	RenderTasks(out, tasks)
 
@@ -44,5 +44,24 @@ Todo:
 	got := out.String()
 	if got != want {
 		t.Errorf("got:%q, want:%q", got, want)
+	}
+}
+
+func TestRenderTaskDoing(t *testing.T) {
+	out := mockOut()
+	tsk := task.Task{
+		ID:    3,
+		Name:  "task to do",
+		State: task.StateDoing,
+	}
+	RenderTaskDoing(out, tsk)
+
+	want := `Moved into Doing:
+  (once done, use "tsk done 3" to mark it as done)
+        3. task to do
+`
+	got := out.String()
+	if got != want {
+		t.Errorf("got:\n%s\n,want:\n%s\n", got, want)
 	}
 }

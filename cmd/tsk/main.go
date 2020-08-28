@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/fitiavana07/tsk/internal/ui"
 	"github.com/fitiavana07/tsk/pkg/storage"
@@ -40,9 +41,25 @@ func TskMain(args []string, out io.Writer, file string) {
 	}
 
 	if len(args) == 3 {
-		taskName := args[2]
-		task := fs.AddTask(taskName)
-		ui.RenderTaskAdded(out, *task)
-		return
+		cmd := args[1]
+		arg := args[2]
+
+		switch cmd {
+
+		case "add":
+			task := fs.AddTask(arg)
+			ui.RenderTaskAdded(out, *task)
+			return
+
+		case "do":
+			taskID, _ := strconv.ParseInt(arg, 10, 0)
+			task := fs.DoTask(int(taskID))
+			ui.RenderTaskDoing(out, *task)
+			return
+
+		default:
+			// TODO handle unrecognized command
+
+		}
 	}
 }
