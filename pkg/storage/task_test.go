@@ -67,35 +67,47 @@ func TestFileStorageTasks(t *testing.T) {
 
 func TestFileStorageDoTask(t *testing.T) {
 	file := tempFile(t)
-	fs := FileStorage{file, db.DB{
-		LastID: 1,
-		Tasks: []task.Task{
-			task.Task{
-				ID:   1,
-				Name: "a sample task",
+	t.Run("DoTask", func(t *testing.T) {
+		fs := FileStorage{file, db.DB{
+			LastID: 1,
+			Tasks: []task.Task{
+				task.Task{
+					ID:   1,
+					Name: "a sample task",
+				},
 			},
-		},
-	}}
-	fs.Save()
+		}}
+		fs.Save()
 
-	tsk := fs.DoTask(1)
+		tsk := fs.DoTask(1)
 
-	fmt.Printf("fs addr: %p\n", &fs)
-	fmt.Printf("db addr: %p\n", &fs.db)
-	for _, tsk := range fs.db.Tasks {
-		fmt.Printf("task addr: %p\n", &tsk)
-	}
+		fmt.Printf("fs addr: %p\n", &fs)
+		fmt.Printf("db addr: %p\n", &fs.db)
+		for _, tsk := range fs.db.Tasks {
+			fmt.Printf("task addr: %p\n", &tsk)
+		}
 
-	if tsk.ID != 1 {
-		// t.Errorf("got wrong task: %s", tsk)
-	}
+		if tsk.ID != 1 {
+			// t.Errorf("got wrong task: %s", tsk)
+		}
 
-	if tsk.State != task.StateDoing {
-		t.Errorf("got returned state=%s, want state=%s", tsk.State, task.StateDoing)
-	}
+		if tsk.State != task.StateDoing {
+			t.Errorf("got returned state=%s, want state=%s", tsk.State, task.StateDoing)
+		}
 
-	got := fs.db.Tasks[0].State
-	if got != task.StateDoing {
-		t.Errorf("got original state=%s, want state=%s", got, task.StateDoing)
-	}
+		got := fs.db.Tasks[0].State
+		if got != task.StateDoing {
+			t.Errorf("got original state=%s, want state=%s", got, task.StateDoing)
+		}
+	})
+
+	t.Run("VerifyDoingTask", func(t *testing.T) {
+		fs := NewFileStorage(file)
+		tasks := fs.Tasks()
+		tsk := tasks[0]
+
+		if tsk.State != task.StateDoing {
+			t.Errorf("state not persisted, got=%s, want=%s", tsk.State, task.StateDoing)
+		}
+	})
 }

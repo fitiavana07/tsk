@@ -19,8 +19,6 @@ func RenderTasks(out io.Writer, tasks []task.Task) {
 	tmpl.Execute(out, tasks)
 }
 
-// TODO
-
 // RenderTaskDoing renders the message to show just after moving a task into doing.
 func RenderTaskDoing(out io.Writer, t task.Task) {
 	tmpl := template.Must(template.New("TaskDoing").Parse(tmplTaskDoing))
