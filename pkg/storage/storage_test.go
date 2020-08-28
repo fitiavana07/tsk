@@ -112,31 +112,3 @@ func TestFileExists(t *testing.T) {
 		}
 	})
 }
-
-func TestFileStorageTasks(t *testing.T) {
-	file := tempFile(t)
-
-	t.Run("NoTask", func(t *testing.T) {
-		fs := NewFileStorage(file)
-		l := len(fs.Tasks())
-		if l != 0 {
-			t.Errorf("got l=%d, want l=0", l)
-		}
-	})
-	t.Run("OneTask", func(t *testing.T) {
-		fs := FileStorage{file, db.DB{
-			LastID: 1,
-			Tasks: []task.Task{
-				task.Task{
-					ID:   1,
-					Name: "a sample task",
-				},
-			},
-		}}
-		fs.Save()
-		l := len(fs.Tasks())
-		if l != 1 {
-			t.Errorf("got l=%d, want l=1", l)
-		}
-	})
-}

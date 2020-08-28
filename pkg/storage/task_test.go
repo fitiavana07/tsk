@@ -2,6 +2,11 @@ package storage
 
 import (
 	"testing"
+
+	"fmt"
+
+	"github.com/fitiavana07/tsk/pkg/storage/db"
+	"github.com/fitiavana07/tsk/pkg/task"
 )
 
 func TestAddTask(t *testing.T) {
@@ -30,4 +35,67 @@ func TestAddTask(t *testing.T) {
 			t.Errorf("wrong task name, got %q, want %q", task.Name, taskName)
 		}
 	})
+}
+
+func TestFileStorageTasks(t *testing.T) {
+	file := tempFile(t)
+
+	t.Run("NoTask", func(t *testing.T) {
+		fs := NewFileStorage(file)
+		l := len(fs.Tasks())
+		if l != 0 {
+			t.Errorf("got l=%d, want l=0", l)
+		}
+	})
+	t.Run("OneTask", func(t *testing.T) {
+		fs := FileStorage{file, db.DB{
+			LastID: 1,
+			Tasks: []task.Task{
+				task.Task{
+					ID:   1,
+					Name: "a sample task",
+				},
+			},
+		}}
+		fs.Save()
+		l := len(fs.Tasks())
+		if l != 1 {
+			t.Errorf("got l=%d, want l=1", l)
+		}
+	})
+}
+
+func TestFileStorageDoTask(t *testing.T) {
+	file := tempFile(t)
+	fs := FileStorage{file, db.DB{
+		LastID: 1,
+		Tasks: []task.Task{
+			task.Task{
+				ID:   1,
+				Name: "a sample task",
+			},
+		},
+	}}
+	fs.Save()
+
+	tsk := fs.DoTask(1)
+
+	fmt.Printf("fs addr: %p\n", &fs)
+	fmt.Printf("db addr: %p\n", &fs.db)
+	for _, tsk := range fs.db.Tasks {
+		fmt.Printf("task addr: %p\n", &tsk)
+	}
+
+	if tsk.ID != 1 {
+		// t.Errorf("got wrong task: %s", tsk)
+	}
+
+	if tsk.State != task.StateDoing {
+		t.Errorf("got returned state=%s, want state=%s", tsk.State, task.StateDoing)
+	}
+
+	got := fs.db.Tasks[0].State
+	if got != task.StateDoing {
+		t.Errorf("got original state=%s, want state=%s", got, task.StateDoing)
+	}
 }

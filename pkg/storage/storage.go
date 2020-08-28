@@ -63,11 +63,6 @@ func (fs FileStorage) Save() error {
 	return nil
 }
 
-// Tasks returns a list of all tasks stored in the FileStorage.
-func (fs FileStorage) Tasks() []task.Task {
-	return fs.db.Tasks
-}
-
 func fileExists(file string) bool {
 	if _, err := os.Stat(file); os.IsNotExist(err) {
 		return false
