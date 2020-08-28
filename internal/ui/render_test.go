@@ -30,21 +30,48 @@ func TestRenderTaskAdded(t *testing.T) {
 
 }
 
-func TestRenderTasksSingleTodo(t *testing.T) {
+func TestRenderTasks(t *testing.T) {
 	out := mockOut()
-	tasks := []task.Task{*task.New(7, "the seventh task")}
+	t.Run("SingleTodo", func(t *testing.T) {
+		defer out.Reset()
 
-	RenderTasks(out, tasks)
+		tasks := []task.Task{*task.New(7, "the seventh task")}
 
-	want := `Doing: None
+		RenderTasks(out, tasks)
+
+		got := out.String()
+		want := `Doing: None
 Todo:
   (use "tsk do 7" to move into Doing)
         7. the seventh task
 `
-	got := out.String()
-	if got != want {
-		t.Errorf("got:%q, want:%q", got, want)
-	}
+		if got != want {
+			t.Errorf("wrong output:\n> got:\n%s\n> want:\n%s\n", got, want)
+		}
+	})
+	t.Run("SingleDoing", func(t *testing.T) {
+		defer out.Reset()
+
+		tasks := []task.Task{
+			task.Task{
+				ID:    8,
+				Name:  "The 8th task",
+				State: task.StateDoing,
+			},
+		}
+
+		RenderTasks(out, tasks)
+
+		got := out.String()
+		want := `Doing:
+  (use "tsk done 8" to mark as Done)
+        8. The 8th task
+Todo: None
+`
+		if got != want {
+			t.Errorf("wrong output:\n> got:\n%s\n> want:\n%s\n", got, want)
+		}
+	})
 }
 
 func TestRenderTaskDoing(t *testing.T) {

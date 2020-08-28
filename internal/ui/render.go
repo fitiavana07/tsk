@@ -15,12 +15,25 @@ func RenderTaskAdded(out io.Writer, t task.Task) {
 
 // RenderTasks renders a list of tasks with their corresponding state.
 func RenderTasks(out io.Writer, tasks []task.Task) {
+	doings := filterTasksByState(tasks, task.StateDoing)
+	todos := filterTasksByState(tasks, task.StateTodo)
+
 	tmpl := template.Must(template.New("Tasks").Parse(tmplTasks))
-	tmpl.Execute(out, tasks)
+	tmpl.Execute(out, map[string]([]task.Task){"doings": doings, "todos": todos})
 }
 
 // RenderTaskDoing renders the message to show just after moving a task into doing.
 func RenderTaskDoing(out io.Writer, t task.Task) {
 	tmpl := template.Must(template.New("TaskDoing").Parse(tmplTaskDoing))
 	tmpl.Execute(out, t)
+}
+
+// TODO TEST
+func filterTasksByState(tasks []task.Task, state task.State) (r []task.Task) {
+	for _, t := range tasks {
+		if t.State == state {
+			r = append(r, t)
+		}
+	}
+	return
 }
