@@ -4,15 +4,10 @@
 
 A simple but effective CLI productivy tool.
 
-**Version 0.3 released: Just type `tsk`.**
-
-### Notes
-
-For directory structure, refer to https://github.com/golang-standards/project-layout.
+**Version 0.3 released: Just type `tsk` in the shell.
 
 ### Ideas
 
-- Use key-value (int, task) in db instead of list: faster lookup (no need for search loop).
 - Add progress bar using https://github.com/vbauerster/mpb.
 - Stylized output with https://github.com/Ullaakut/disgo.
 - Use Travis for CI.
