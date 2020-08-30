@@ -4,7 +4,7 @@
 
 A simple but effective CLI productivy tool.
 
-**Version 0.3 released: Just type `tsk` in the shell.
+**Version 0.3 released: Just type `tsk` in the shell.**
 
 ### Ideas
 
