@@ -11,19 +11,17 @@ const tmplTasks = `
 Doing:{{ "\n" }}
 
 	{{- if len .doings | eq 1 -}}
-
 		{{- with index .doings 0 -}}
-			{{- "  " }}(use "tsk done {{ .ID }}" to mark as Done){{ "\n" }}
-			{{- "        "}}{{ .ID }}. {{ .Name }}{{ "\n" }}
+			{{- template "TipToDone" .ID -}}
+			{{- template "Item" . -}}
 		{{- end -}}
 
 	{{- else -}}
-		{{- "  " }}(use "tsk done <n>" to mark as Done){{ "\n" }}
+		{{- template "TipToDone" "<n>" -}}
 
 		{{- range .doings -}}
-			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+			{{- template "Item" . -}}
 		{{- end -}}
-
 	{{- end -}}
 
 {{- else -}}
@@ -36,21 +34,32 @@ Todo:{{ "\n" }}
 	{{- if len .todos | eq 1 -}}
 
 		{{- with index .todos 0 -}}
-			{{- "  " }}(use "tsk do {{ .ID }}" to move into Doing){{ "\n" }}
-			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+			{{- template "TipToDoing" .ID -}}
+			{{- template "Item" . -}}
 		{{- end -}}
 
 	{{- else -}}
-		{{- "  " }}(use "tsk do <n>" to move into Doing){{ "\n" }}
+		{{- template "TipToDoing" "<n>" -}}
 
 		{{- range .todos -}}
-			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+			{{- template "Item" . -}}
 		{{- end -}}
-
 	{{- end -}}
 
 {{- else -}}
 Todo: None{{ "\n" }}
+{{- end -}}
+
+{{- define "Item" -}}
+	{{- "        "}}{{ .ID }}. {{ .Name }}{{ "\n" }}
+{{- end -}}
+
+{{- define "TipToDone" -}}
+	{{- "  " }}(use "tsk done {{ . }}" to mark as Done){{ "\n" }}
+{{- end -}}
+
+{{- define "TipToDoing" -}}
+	{{- "  " }}(use "tsk do {{ . }}" to move into Doing){{ "\n" }}
 {{- end -}}
 `
 
