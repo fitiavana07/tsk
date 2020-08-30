@@ -136,7 +136,7 @@ Todo: None
   (use "tsk done 1" to mark as Done)
         1. Call John Doe
 Todo:
-  (use "tsk do 2" to move into Doing)
+  (once done, use "tsk do 2" to move into Doing)
         2. Create a PR
 `}, {
 	"DoSecondTask",
