@@ -9,20 +9,25 @@ const tmplTaskAdded = `Added:
 const tmplTasks = `
 {{- if .doings -}}
 Doing:
+
 {{- range .doings }}
   (use "tsk done {{ .ID }}" to mark as Done)
         {{ .ID }}. {{ .Name }}
-{{- end}}
-{{ else -}}
+{{ end -}}
+
+{{- else -}}
 Doing: None
 {{ end -}}
-{{ if .todos -}}
+
+{{- if .todos -}}
 Todo:
+
 {{- range .todos }}
   (use "tsk do {{ .ID }}" to move into Doing)
         {{ .ID }}. {{ .Name }}
 {{ end -}}
-{{ else -}}
+
+{{- else -}}
 Todo: None
 {{ end -}}
 `
