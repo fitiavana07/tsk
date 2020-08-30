@@ -33,7 +33,12 @@ func TskMain(args []string, out io.Writer, file string) {
 	if len(args) == 1 {
 		tasks := fs.Tasks()
 		if len(tasks) == 0 {
-			fmt.Fprintf(out, ui.MsgNoTask)
+			tasksDone := fs.TasksDone()
+			if len(tasksDone) == 0 {
+				fmt.Fprintf(out, ui.MsgNoTask)
+			} else {
+				fmt.Fprintf(out, ui.MsgAllDone)
+			}
 		} else {
 			ui.RenderTasks(out, tasks)
 		}

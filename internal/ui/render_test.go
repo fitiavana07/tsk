@@ -49,6 +49,7 @@ Todo:
 			t.Errorf("wrong output:\n> got:\n%s\n> want:\n%s\n", got, want)
 		}
 	})
+
 	t.Run("SingleDoing", func(t *testing.T) {
 		defer out.Reset()
 

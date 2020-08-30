@@ -12,4 +12,9 @@ To get started, add a task using: tsk add "your task".
 	MsgNoTask = `Your todo list is empty
 To add a task, use: tsk add "your task"
 `
+
+	// MsgAllDone is the message shown when all tasks are done.
+	MsgAllDone = `Congrats! All done for today.
+Use "tsk --done" to show all done tasks
+`
 )
