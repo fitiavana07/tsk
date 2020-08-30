@@ -8,28 +8,50 @@ const tmplTaskAdded = `Added:
 
 const tmplTasks = `
 {{- if .doings -}}
-Doing:
+Doing:{{ "\n" }}
 
-{{- range .doings }}
-  (use "tsk done {{ .ID }}" to mark as Done)
-        {{ .ID }}. {{ .Name }}
-{{ end -}}
+	{{- if len .doings | eq 1 -}}
+
+		{{- with index .doings 0 -}}
+			{{- "  " }}(use "tsk done {{ .ID }}" to mark as Done){{ "\n" }}
+			{{- "        "}}{{ .ID }}. {{ .Name }}{{ "\n" }}
+		{{- end -}}
+
+	{{- else -}}
+		{{- "  " }}(use "tsk done <n>" to mark as Done){{ "\n" }}
+
+		{{- range .doings -}}
+			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+		{{- end -}}
+
+	{{- end -}}
 
 {{- else -}}
-Doing: None
-{{ end -}}
+Doing: None{{ "\n" }}
+{{- end -}}
 
 {{- if .todos -}}
-Todo:
+Todo:{{ "\n" }}
 
-{{- range .todos }}
-  (use "tsk do {{ .ID }}" to move into Doing)
-        {{ .ID }}. {{ .Name }}
-{{ end -}}
+	{{- if len .todos | eq 1 -}}
+
+		{{- with index .todos 0 -}}
+			{{- "  " }}(use "tsk do {{ .ID }}" to move into Doing){{ "\n" }}
+			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+		{{- end -}}
+
+	{{- else -}}
+		{{- "  " }}(use "tsk do <n>" to move into Doing){{ "\n" }}
+
+		{{- range .todos -}}
+			{{- "        " }}{{ .ID }}. {{ .Name }}{{ "\n" }}
+		{{- end -}}
+
+	{{- end -}}
 
 {{- else -}}
-Todo: None
-{{ end -}}
+Todo: None{{ "\n" }}
+{{- end -}}
 `
 
 const tmplTaskDoing = `Moved into Doing:

@@ -204,7 +204,8 @@ func testAct(t *testing.T, ac act, stdout *bytes.Buffer, file string) {
 	want := ac.output
 
 	if got != want {
-		t.Errorf("wrong output: \n> ARGS:\n%s\n\n> GOT:\n%q\n> WANT:\n%q", ac.args, got, want)
+		t.Errorf("wrong output: \n> ARGS:\n%s\n\n> GOT:\n%q\n> WANT:\n%q\n", ac.args, got, want)
+		// t.Errorf("wrong output: \n> ARGS:\n%s\n\n> GOT:\n%s\n> WANT:\n%s\n", ac.args, got, want)
 	}
 }
 
