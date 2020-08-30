@@ -97,6 +97,36 @@ func TestTasks(t *testing.T) {
 	})
 }
 
+func TestTasksDone(t *testing.T) {
+	file := tempFile(t)
+	fs := FileStorage{file, db.DB{
+		LastID: 3,
+		Tasks: []task.Task{
+			task.Task{
+				ID:    1,
+				Name:  "a todo task",
+				State: task.StateTodo,
+			},
+			task.Task{
+				ID:    2,
+				Name:  "a doing task",
+				State: task.StateTodo,
+			},
+			task.Task{
+				ID:    3,
+				Name:  "a done task",
+				State: task.StateDone,
+			},
+		},
+	}}
+	fs.Save()
+
+	l := len(fs.TasksDone())
+	if l != 1 {
+		t.Errorf("got l=%d, want l=1", l)
+	}
+}
+
 func TestDoTask(t *testing.T) {
 	file := tempFile(t)
 	t.Run("DoTask", func(t *testing.T) {
