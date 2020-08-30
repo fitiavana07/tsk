@@ -142,7 +142,7 @@ Todo:
 	"DoSecondTask",
 	a("tsk", "do", "2"),
 	`Moved into Doing:
-  (use "tsk done 2" to mark as Done)
+  (once done, use "tsk done 2" to mark it as done)
         2. Create a PR
 `}, {
 	"ListTaskAfterDoSecondTask",
