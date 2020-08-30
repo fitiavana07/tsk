@@ -81,7 +81,9 @@ For directory structure, refer to https://github.com/golang-standards/project-la
 
 ### Ideas
 
-Add progress bar using https://github.com/vbauerster/mpb.
-Stylized output with https://github.com/Ullaakut/disgo.
-Use Travis for CI.
-Add colors using https://github.com/gookit/color
+- Use key-value (int, task) in db instead of list: faster lookup (no need for search loop).
+- Add progress bar using https://github.com/vbauerster/mpb.
+- Stylized output with https://github.com/Ullaakut/disgo.
+- Use Travis for CI.
+- Add colors using https://github.com/gookit/color
+- Use TermUI: https://github.com/gizak/termui
