@@ -30,6 +30,7 @@ func TskMain(args []string, out io.Writer, file string) {
 		return
 	}
 
+	// tsk
 	if len(args) == 1 {
 		tasks := fs.Tasks()
 		if len(tasks) == 0 {
@@ -45,6 +46,13 @@ func TskMain(args []string, out io.Writer, file string) {
 		return
 	}
 
+	// tsk --done
+	if len(args) == 2 {
+		doneTasks := fs.TasksDone()
+		ui.RenderDoneTasks(out, doneTasks)
+	}
+
+	// tsk cmd arg
 	if len(args) == 3 {
 		cmd := args[1]
 		arg := args[2]
@@ -70,5 +78,7 @@ func TskMain(args []string, out io.Writer, file string) {
 			// TODO handle unrecognized command
 
 		}
+
+		return
 	}
 }

@@ -75,6 +75,36 @@ Todo: None
 	})
 }
 
+func TestRenderDoneTasks(t *testing.T) {
+	out := mockOut()
+	defer out.Reset()
+
+	doneTasks := []task.Task{
+		task.Task{
+			ID:    6,
+			Name:  "The sixth task",
+			State: task.StateDone,
+		},
+		task.Task{
+			ID:    17,
+			Name:  "The 17th task",
+			State: task.StateDone,
+		},
+	}
+
+	RenderDoneTasks(out, doneTasks)
+
+	got := out.String()
+	want := `Done:
+        6. The sixth task
+        17. The 17th task
+`
+
+	if got != want {
+		t.Errorf("wrong output:\n> got:\n%q\n> want:\n%q\n", got, want)
+	}
+}
+
 func TestRenderTaskDoing(t *testing.T) {
 	out := mockOut()
 	tsk := task.Task{

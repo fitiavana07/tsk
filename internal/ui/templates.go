@@ -63,6 +63,16 @@ Todo: None{{ "\n" }}
 {{- end -}}
 `
 
+const tmplDoneTasks = `Done:{{ "\n" }}
+{{- range . -}}
+	{{- template "Item" . -}}
+{{- end -}}
+
+{{- define "Item" -}}
+	{{- "        "}}{{ .ID }}. {{ .Name }}{{ "\n" }}
+{{- end -}}
+`
+
 const tmplTaskDoing = `Moved into Doing:
   (once done, use "tsk done {{ .ID }}" to mark it as done)
         {{ .ID }}. {{ .Name }}

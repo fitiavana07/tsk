@@ -180,8 +180,8 @@ Use "tsk --done" to show all done tasks
 	"ListDoneTasks",
 	a("tsk", "--done"),
 	`Done:
-	1. Call John Doe
-	2. Create a PR
+        1. Call John Doe
+        2. Create a PR
 `}}
 
 func TestFunctional(t *testing.T) {

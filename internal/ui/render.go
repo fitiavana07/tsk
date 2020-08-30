@@ -22,6 +22,12 @@ func RenderTasks(out io.Writer, tasks []task.Task) {
 	tmpl.Execute(out, map[string]([]task.Task){"doings": doings, "todos": todos})
 }
 
+// RenderDoneTasks renders a list of done tasks.
+func RenderDoneTasks(out io.Writer, tasksDone []task.Task) {
+	tmpl := template.Must(template.New("DoneTasks").Parse(tmplDoneTasks))
+	tmpl.Execute(out, tasksDone)
+}
+
 // RenderTaskDoing renders the message to show just after moving a task into doing.
 func RenderTaskDoing(out io.Writer, t task.Task) {
 	tmpl := template.Must(template.New("TaskDoing").Parse(tmplTaskDoing))
