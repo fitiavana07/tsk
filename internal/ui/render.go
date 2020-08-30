@@ -28,7 +28,13 @@ func RenderTaskDoing(out io.Writer, t task.Task) {
 	tmpl.Execute(out, t)
 }
 
-// TODO TEST
+// RenderTaskDone renders the message to show just after moving a task into done.
+func RenderTaskDone(out io.Writer, t task.Task) {
+	tmpl := template.Must(template.New("TaskDone").Parse(tmplTaskDone))
+	tmpl.Execute(out, t)
+}
+
+// TODO UNIT TEST
 func filterTasksByState(tasks []task.Task, state task.State) (r []task.Task) {
 	for _, t := range tasks {
 		if t.State == state {

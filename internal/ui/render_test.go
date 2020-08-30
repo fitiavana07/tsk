@@ -81,6 +81,7 @@ func TestRenderTaskDoing(t *testing.T) {
 		Name:  "task to do",
 		State: task.StateDoing,
 	}
+
 	RenderTaskDoing(out, tsk)
 
 	want := `Moved into Doing:
@@ -89,6 +90,27 @@ func TestRenderTaskDoing(t *testing.T) {
 `
 	got := out.String()
 	if got != want {
-		t.Errorf("got:\n%s\n,want:\n%s\n", got, want)
+		t.Errorf("got:\n%s\nwant:\n%s\n", got, want)
+	}
+}
+
+func TestRenderTaskDone(t *testing.T) {
+	out := mockOut()
+	tsk := task.Task{
+		ID:    5,
+		Name:  "A done task",
+		State: task.StateDone,
+	}
+
+	RenderTaskDone(out, tsk)
+
+	want := `Marked as Done:
+        5. A done task
+Use "tsk --done" to show all done tasks
+`
+
+	got := out.String()
+	if got != want {
+		t.Errorf("got:\n%s\nwant:\n%s\n", got, want)
 	}
 }

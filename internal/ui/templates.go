@@ -67,3 +67,8 @@ const tmplTaskDoing = `Moved into Doing:
   (once done, use "tsk done {{ .ID }}" to mark it as done)
         {{ .ID }}. {{ .Name }}
 `
+
+const tmplTaskDone = `Marked as Done:
+        {{ .ID }}. {{ .Name }}
+Use "tsk --done" to show all done tasks
+`
