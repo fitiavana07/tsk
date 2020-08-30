@@ -57,6 +57,10 @@ func TskMain(args []string, out io.Writer, file string) {
 			ui.RenderTaskDoing(out, *task)
 			return
 
+		case "done":
+			taskID, _ := strconv.ParseInt(arg, 10, 0)
+			task := fs.DoneTask(int(taskID))
+			ui.RenderTaskDone(out, *task)
 		default:
 			// TODO handle unrecognized command
 
