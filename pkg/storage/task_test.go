@@ -45,6 +45,7 @@ func TestTasks(t *testing.T) {
 			t.Errorf("got l=%d, want l=0", l)
 		}
 	})
+
 	t.Run("OneTask", func(t *testing.T) {
 		fs := FileStorage{file, db.DB{
 			LastID: 1,
@@ -59,6 +60,39 @@ func TestTasks(t *testing.T) {
 		l := len(fs.Tasks())
 		if l != 1 {
 			t.Errorf("got l=%d, want l=1", l)
+		}
+	})
+
+	t.Run("NoDoneTaskInList", func(t *testing.T) {
+		fs := FileStorage{file, db.DB{
+			LastID: 3,
+			Tasks: []task.Task{
+				task.Task{
+					1,
+					"a sample task",
+					task.StateTodo,
+				},
+				task.Task{
+					2,
+					"a doing task",
+					task.StateDoing,
+				},
+				task.Task{
+					3,
+					"a done task",
+					task.StateDone,
+				},
+			},
+		}}
+
+		fs.Save()
+		l := len(fs.Tasks())
+		if l != 2 {
+			if l == 3 {
+				t.Errorf("done tasks still counted, got 3, want 2")
+			} else {
+				t.Errorf("totally wrong tasks number, got: %d, tasks: %v", l, fs.Tasks())
+			}
 		}
 	})
 }
@@ -139,7 +173,7 @@ func TestDoneTask(t *testing.T) {
 
 	t.Run("VerifyDoneTask", func(t *testing.T) {
 		fs := NewFileStorage(file)
-		tasks := fs.Tasks()
+		tasks := fs.db.Tasks
 		tsk := tasks[0]
 
 		if tsk.State != task.StateDone {

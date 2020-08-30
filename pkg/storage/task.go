@@ -13,9 +13,16 @@ func (fs FileStorage) AddTask(name string) *task.Task {
 	return tsk
 }
 
-// Tasks returns a list of all tasks stored in the FileStorage.
-func (fs FileStorage) Tasks() []task.Task {
-	return fs.db.Tasks
+// Tasks returns a list of Todo and Doing tasks stored in the FileStorage.
+// Done tasks are not part of the returned list.
+// To get list of done tasks, use FileStorage.TasksDone().
+func (fs FileStorage) Tasks() (r []task.Task) {
+	for _, t := range fs.db.Tasks {
+		if t.State == task.StateTodo || t.State == task.StateDoing {
+			r = append(r, t)
+		}
+	}
+	return
 }
 
 // DoTask moves the state of a task from Todo to Doing.
