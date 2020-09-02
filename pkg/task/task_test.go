@@ -52,18 +52,25 @@ func TestStateString(t *testing.T) {
 	got = StateTodo.String()
 	want = "Todo"
 	if got != want {
-		t.Errorf("got: %s, want: %s", got, want)
+		t.Errorf("got=%q, want=%q", got, want)
 	}
 
 	got = StateDoing.String()
 	want = "Doing"
 	if got != want {
-		t.Errorf("got: %s, want: %s", got, want)
+		t.Errorf("got=%q, want=%q", got, want)
 	}
 
 	got = StateDone.String()
 	want = "Done"
 	if got != want {
-		t.Errorf("got: %s, want: %s", got, want)
+		t.Errorf("goti=%q, want=%q", got, want)
+	}
+
+	const stateUnknown State = 200
+	got = stateUnknown.String()
+	want = ""
+	if got != want {
+		t.Errorf("got=%q, want=%q", got, want)
 	}
 }
