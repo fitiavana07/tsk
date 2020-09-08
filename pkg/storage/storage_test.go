@@ -15,6 +15,26 @@ func tempFile(t *testing.T) string {
 	return filepath.Join(t.TempDir(), "data.db")
 }
 
+func TestNewFileStorage(t *testing.T) {
+	file := tempFile(t)
+	fs := FileStorage{file, db.DB{
+		LastID: 1,
+		Tasks: []task.Task{
+			task.Task{
+				ID:   1,
+				Name: "a sample task",
+			},
+		},
+	}}
+	fs.Save()
+
+	newFs := NewFileStorage(file)
+	got := newFs.db.LastID
+	if got != 1 {
+		t.Errorf("db.LastID=%d, want=1", got)
+	}
+}
+
 func TestIsFirstUse(t *testing.T) {
 	file := tempFile(t)
 	fs := NewFileStorage(file)
@@ -40,56 +60,38 @@ func TestIsFirstUse(t *testing.T) {
 }
 
 func TestSave(t *testing.T) {
-	file := tempFile(t)
-	fs := NewFileStorage(file)
+	t.Run("SaveIntoNewFile", func(t *testing.T) {
+		file := tempFile(t)
+		fs := NewFileStorage(file)
 
-	fs.Save()
+		fs.Save()
 
-	if !fileExists(file) {
-		t.Errorf("file still doesn't exist")
-	}
-}
+		if !fileExists(file) {
+			t.Errorf("file still doesn't exist")
+		}
+	})
 
-func TestSaveNotEmpty(t *testing.T) {
-	file := tempFile(t)
-	fs := FileStorage{file, db.DB{
-		LastID: 1,
-		Tasks: []task.Task{
-			task.Task{
-				ID:   1,
-				Name: "a sample task",
+	t.Run("SaveIntoNotEmptyFile", func(t *testing.T) {
+		file := tempFile(t)
+		fs := FileStorage{file, db.DB{
+			LastID: 1,
+			Tasks: []task.Task{
+				task.Task{
+					ID:   1,
+					Name: "a sample task",
+				},
 			},
-		},
-	}}
-	fs.Save()
-	fileContent, err := ioutil.ReadFile(file)
-	if err != nil {
-		t.Errorf("%v", err)
-	}
+		}}
+		fs.Save()
+		fileContent, err := ioutil.ReadFile(file)
+		if err != nil {
+			t.Errorf("%v", err)
+		}
 
-	if len(fileContent) == 0 {
-		t.Errorf("file is still empty")
-	}
-}
-
-func TestNewFileStorageNotEmpty(t *testing.T) {
-	file := tempFile(t)
-	fs := FileStorage{file, db.DB{
-		LastID: 1,
-		Tasks: []task.Task{
-			task.Task{
-				ID:   1,
-				Name: "a sample task",
-			},
-		},
-	}}
-	fs.Save()
-
-	newFs := NewFileStorage(file)
-	got := newFs.db.LastID
-	if got != 1 {
-		t.Errorf("db.LastID=%d, want=1", got)
-	}
+		if len(fileContent) == 0 {
+			t.Errorf("file is still empty")
+		}
+	})
 }
 
 func TestFileExists(t *testing.T) {
@@ -99,6 +101,7 @@ func TestFileExists(t *testing.T) {
 			t.Errorf("got fileExists() == true, want false")
 		}
 	})
+
 	t.Run("FileExists", func(t *testing.T) {
 		fl, err := os.Create(file)
 		if err != nil {

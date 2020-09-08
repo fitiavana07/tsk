@@ -48,12 +48,10 @@ func (fs FileStorage) IsFirstUse() bool {
 }
 
 // Save saves data into the file.
+// TODO handle errors on file permissions
 func (fs FileStorage) Save() error {
 	if !fileExists(fs.file) {
-		fl, err := os.Create(fs.file)
-		if err != nil {
-			return err
-		}
+		fl, _ := os.Create(fs.file)
 		fl.Close()
 	}
 
